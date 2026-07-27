@@ -1,46 +1,65 @@
-# Lip Reading Experiments: Image-Based vs Landmark-Based
+# IndoLR Visual Speech Recognition
 
-Repositori ini berisi dua *notebook* eksperimen untuk membangun model *Lip Reading* (Membaca Gerak Bibir). Eksperimen ini dirancang untuk dijalankan di **Google Colab** menggunakan dataset publik IndoLR.
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue?logo=python)](https://www.python.org/)
+[![PyTorch 2.13](https://img.shields.io/badge/pytorch-2.13-red?logo=pytorch)](https://pytorch.org/)
+[![CUDA](https://img.shields.io/badge/CUDA-ready-green?logo=nvidia)](https://developer.nvidia.com/cuda-toolkit)
+[![Dataset](https://img.shields.io/badge/dataset-IndoLR-orange)](https://www.kaggle.com/datasets/abasset/indolr)
+[![uv](https://img.shields.io/badge/uv-venv-lightgrey?logo=astral)](https://docs.astral.sh/uv/)
 
-Secara garis besar, kedua *notebook* memiliki kesamaan pada:
-- **Titik Landmark:** Menggunakan **40 titik spesifik** (`LIPS_PAIRS`) dari MediaPipe yang merepresentasikan cincin bibir luar dan dalam.
-- **Validasi:** Menerapkan skema **LOSO (Leave-One-Subject-Out) 8-Fold Cross-Validation** dengan rasio pembagian dataset: **6 Train / 1 Val / 1 Test**.
-
----
-
-## Detail
-
-### Notebook `LipReading_V5`: Pendekatan Berbasis Citra (Spatio-Temporal)
-Versi ini menggunakan potongan gambar (ROI) bibir secara langsung sebagai input model dan menyimpan hasil *precompute* ke dalam format `.npy`.
-
-- **Precompute & Crop:** 
-  Mengekstrak *Bounding Box* persis mengikuti bentuk bibir (berdasarkan koordinat min/max landmark) dengan tambahan *padding* proporsional agar bibir tidak terpotong. Sistem ini tidak akan ikut menangkap hidung dagu.
-- **Penyesuaian Frame:** 
-  Disesuaikan untuk target 30 FPS.
-  - *Jika frame berlebih:* Dilakukan *center crop* simetris (membuang frame awal & akhir yang cenderung diam).
-  - *Jika frame kurang:* Frame asli dipertahankan di awal, dan *black-padding* ditambahkan **hanya di akhir sequence**.
-- **Arsitektur Model:** 
-  Menggunakan **LRCN (Long Recurrent Convolutional Network)** dengan optimasi layer *TimeDistributed* dan LSTM. Total parameter: **~1.263.000**.
-
-### Notebook `LipReading_V6`: Pendekatan Berbasis Koordinat (Landmark + MAR)
-Versi ini tidak menggunakan data gambar, melainkan hanya berfokus pada pergerakan titik koordinat bibir sehingga jauh lebih ringan dan efisien.
-
-- **Precompute & Normalisasi:** 
-  Input berupa koordinat $(x,y)$ yang telah dinormalisasi (rotasi, skala berdasarkan jarak antar-mata, dan translasi centroid bibir) ditambah 1 fitur **MAR (Mouth Aspect Ratio)**.
-- **Smart Sequence Processing:** 
-  Tidak lagi menggunakan *crop/pad* statis. V6 mendeteksi **segmen aktif bicara** berdasarkan nilai *threshold* MAR (menyaring *noise* seperti tarikan napas/decak bibir). Setelah segmen bicara didapat, sequence di-**resample (interpolasi linear)** agar ukurannya pas dengan target.
-- **Arsitektur Model:** 
-  Menggunakan **BiGRU dengan Attention Pooling**. Terdapat *Conv1D frontend* untuk menangkap kecepatan gerak antar-frame. *Attention* digunakan agar model otomatis fokus pada frame penting (puncak artikulasi).
+This is a fork of a student's final project. My goal is to help them reproduce and improve their experiments on a proper GPU setup (RTX 5070).
 
 ---
 
-## 🚀 Cara Penggunaan
+## Two Approaches
 
-1. *notebook* (`LipReading_V5` atau `LipReading_V6`) di rancang untuk dijalankan melalui **Google Colab**. sehingga menjalankannya di local perlu ada sedikit perbaikan dari cell config untuk mengubah path dan juga tidak melakukan atau menajalankan file backup yang memang diperuntukan untuk google colab karena butuh untuk mengganti runtime dari CPU -> GPU.
-2. **Dataset (IndoLR) bersifat publik**. Anda tidak memerlukan API Key atau konfigurasi rahasia Kaggle. Dataset akan otomatis terunduh menggunakan `kagglehub` melalui *snippet* kode berikut yang sudah ada di dalam *notebook*:
+| | V5 — Image Pipeline | V6 — Landmark Pipeline |
+|---|---|---|
+| **Input** | Grayscale mouth crops (80×80) | 81-dim vector: 40 facial landmarks × (x,y) + MAR |
+| **Model** | LRCN (CNN + LSTM) — ~1.26M params | BiGRU + Attention — ~70K params |
+| **Preprocessing** | Bounding box crop → square pad → resize | Landmark normalization + speech segment detection via MAR |
+| **Sequence handling** | Center-crop / tail-pad | MAR-thresholded segment extraction + linear resampling |
+
+Both share: 40 MediaPipe face mesh landmarks (full outer + inner lip rings), LOSO 8-fold cross-validation, IndoLR dataset (10 word classes + 4 phrase classes).
+
+---
+
+## Quick Start
+
+### 1. Download the dataset
+
+```bash
+bash download_dataset.sh
+```
+
+Downloads ~4.3 GB of videos to `./data/` plus the MediaPipe face landmarker model.
+
+### 2. Set up the environment
+
+```bash
+uv venv --python 3.12
+uv pip install -r requirements.txt
+```
+
+### 3. Run the notebooks
+
+Open `LipReading_v5.ipynb` (image-based) or `LipReading_v6.ipynb` (landmark-based). The notebooks were originally written for Google Colab — adjust paths in the `CONFIG` cell for local use:
 
 ```python
-import kagglehub
+CONFIG["ROOT_VIDEO"] = "./data"
+CONFIG["OUT_ROOT"] = "./precomputed"
+CONFIG["MODEL_TASK_PATH"] = "./face_landmarker.task"
+```
 
-kaggle_path = kagglehub.dataset_download("abasset/indolr")
-print("Dataset terunduh di:", kaggle_path)
+---
+
+## Repo Layout
+
+```
+.
+├── download_dataset.sh   # Fetches IndoLR + MediaPipe model
+├── requirements.txt      # Python deps (uv-compatible)
+├── LipReading_v5.ipynb   # Image-based pipeline
+├── LipReading_v6.ipynb   # Landmark-based pipeline
+├── data/                 # Downloaded dataset (gitignored)
+└── skills/               # Local notes (gitignored)
+```
