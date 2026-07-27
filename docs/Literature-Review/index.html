@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Evidence-led review of recent visual speech recognition studies using the IndoLR dataset.">
+  <title>IndoLR Literature Review</title>
+  <style>
+    :root { color-scheme: dark; --bg: #0b1020; --panel: #121a2e; --panel-2: #18233b; --text: #ecf2ff; --muted: #a8b5cf; --line: #2b3b5f; --accent: #7dd3fc; --green: #86efac; --gold: #fcd34d; --red: #fda4af; }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: radial-gradient(circle at 10% 0%, #172554 0, transparent 35%), var(--bg); color: var(--text); font: 16px/1.6 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    a { color: var(--accent); }
+    .wrap { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+    header { padding: 72px 0 42px; }
+    .eyebrow { color: var(--accent); font-size: .78rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+    h1 { max-width: 820px; margin: 10px 0 14px; font-size: clamp(2.2rem, 5vw, 4.4rem); line-height: 1.03; letter-spacing: -.045em; }
+    h2 { margin: 0 0 12px; font-size: 1.45rem; }
+    h3 { margin: 0 0 8px; font-size: 1.05rem; }
+    p { margin: 8px 0; }
+    .lead { max-width: 760px; color: var(--muted); font-size: 1.1rem; }
+    .updated { color: var(--muted); font-size: .88rem; }
+    .grid { display: grid; gap: 16px; }
+    .cards { grid-template-columns: repeat(4, 1fr); margin: 28px 0; }
+    .card, .callout, .study { background: color-mix(in srgb, var(--panel) 94%, transparent); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 14px 44px #0003; }
+    .card { padding: 20px; }
+    .card strong { display: block; margin-top: 8px; font-size: 1.55rem; color: var(--green); }
+    .card small { color: var(--muted); }
+    .section { margin: 42px 0; }
+    .callout { padding: 24px; border-color: #2d6a82; background: linear-gradient(135deg, #10253a, var(--panel)); }
+    .callout strong { color: var(--gold); }
+    .note { color: var(--muted); font-size: .92rem; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 16px 0; }
+    input[type="search"] { flex: 1 1 260px; min-width: 220px; padding: 11px 13px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); color: var(--text); font: inherit; }
+    button { padding: 9px 13px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--text); cursor: pointer; font: inherit; }
+    button:hover, button.active { border-color: var(--accent); background: #17324c; }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; }
+    table { width: 100%; min-width: 930px; border-collapse: collapse; background: var(--panel); }
+    th, td { padding: 13px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { color: var(--accent); font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; cursor: pointer; user-select: none; }
+    th:hover { color: var(--text); }
+    tr:last-child td { border-bottom: 0; }
+    td strong { color: var(--text); }
+    .score { color: var(--green); font-weight: 800; white-space: nowrap; }
+    .tag { display: inline-block; margin: 2px 4px 2px 0; padding: 2px 8px; border-radius: 999px; background: #203452; color: var(--accent); font-size: .76rem; }
+    .tag.related { color: var(--gold); background: #40351a; }
+    .studies { grid-template-columns: repeat(2, 1fr); }
+    .study { padding: 22px; }
+    .study header { padding: 0; }
+    .study .meta { color: var(--muted); font-size: .9rem; }
+    .study ul { margin: 12px 0 0; padding-left: 20px; }
+    details { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 10px; }
+    summary { color: var(--accent); cursor: pointer; }
+    .bar-row { display: grid; grid-template-columns: 180px 1fr 64px; gap: 10px; align-items: center; margin: 12px 0; }
+    .bar { height: 12px; overflow: hidden; border-radius: 99px; background: #263452; }
+    .bar span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #38bdf8, #86efac); }
+    footer { padding: 32px 0 56px; color: var(--muted); font-size: .9rem; }
+    @media (max-width: 900px) { .cards { grid-template-columns: repeat(2, 1fr); } .studies { grid-template-columns: 1fr; } }
+    @media (max-width: 540px) { .cards { grid-template-columns: 1fr; } .bar-row { grid-template-columns: 1fr; gap: 3px; } }
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <div class="eyebrow">Evidence review · IndoLR · 2024–2026</div>
+    <h1>What works best on IndoLR?</h1>
+    <p class="lead">A compact review of recent, directly verifiable studies using the public IndoLR dataset. Results stay tied to reported protocols; no cross-dataset leaderboard claims.</p>
+    <p class="updated">Reviewed 27 July 2026 · Sources linked below · <a href="references.bib">Download BibTeX</a></p>
+  </header>
+
+  <main class="wrap">
+    <section class="grid cards" aria-label="Key findings">
+      <div class="card"><small>Best word test accuracy</small><strong>95.42%</strong><span>LRCN-3Conv</span></div>
+      <div class="card"><small>Best phrase test accuracy</small><strong>95.63%</strong><span>LRCN-3Conv</span></div>
+      <div class="card"><small>Lowest word compute</small><strong>0.01 GFLOPs</strong><span>Attention-BiLSTM</span></div>
+      <div class="card"><small>Smallest word model</small><strong>175,499</strong><span>Attention-BiLSTM</span></div>
+    </section>
+
+    <section class="callout section" aria-labelledby="bottom-line">
+      <h2 id="bottom-line">Bottom line</h2>
+      <p><strong>Choose LRCN-3Conv for highest reported accuracy.</strong> It reaches 95.42% on words and 95.63% on phrases in the 2024 study. The landmark Attention-BiLSTM reaches 93.03% and 95.18%, respectively, while using far less compute.</p>
+      <p><strong>Choose Attention-BiLSTM for efficient deployment.</strong> Its reported word-level cost is 0.01 GFLOPs and 0.000530 s model inference per sample, versus 0.62 GFLOPs and 0.211583 s for LRCN-3Conv.</p>
+      <p class="note">These are reported results, not a new controlled benchmark. The papers differ in implementation, split details, training setup, and model selection. Re-run both pipelines under one protocol before treating the margin as causal.</p>
+    </section>
+
+    <section class="section" aria-labelledby="comparison">
+      <h2 id="comparison">Direct IndoLR comparison</h2>
+      <p class="note">Sort columns by clicking headers. Search architecture, study, or representation. “Words” and “phrases” are separate tasks.</p>
+      <div class="toolbar">
+        <input id="search" type="search" placeholder="Filter studies…" aria-label="Filter studies">
+        <button class="filter active" data-filter="all">All</button>
+        <button class="filter" data-filter="direct">Direct IndoLR</button>
+        <button class="filter" data-filter="related">Related dataset</button>
+      </div>
+      <div class="table-wrap">
+        <table id="results">
+          <thead><tr>
+            <th data-key="study">Study</th><th data-key="year">Year</th><th data-key="representation">Representation</th><th data-key="architecture">Architecture</th><th data-key="word">Word test</th><th data-key="phrase">Phrase test</th><th data-key="efficiency">Efficiency</th><th data-key="scope">Scope</th>
+          </tr></thead>
+          <tbody>
+            <tr data-scope="direct"><td><strong>Aripin &amp; Setiawan</strong><br><a href="https://doi.org/10.1155/2024/6479124">[S1]</a></td><td>2024</td><td>Mouth ROI images from MediaPipe Face Mesh</td><td>LRCN-3Conv</td><td class="score" data-value="95.42">95.42%</td><td class="score" data-value="95.63">95.63%</td><td>3,299,178 params<br>0.62 / 0.83 GFLOPs</td><td><span class="tag">Direct IndoLR</span></td></tr>
+            <tr data-scope="direct"><td><strong>Utama, Hidayat &amp; Alfarozi</strong><br><a href="https://doi.org/10.20473/jisebi.12.2.269-282">[S2]</a></td><td>2026</td><td>40 mouth landmarks + normalized coordinates</td><td>Attention-BiLSTM</td><td class="score" data-value="93.03">93.03%</td><td class="score" data-value="95.18">95.18%</td><td>175,499 / 2,271,749 params<br>0.01 / 0.14 GFLOPs</td><td><span class="tag">Direct IndoLR</span></td></tr>
+            <tr data-scope="related"><td><strong>Rahmatullah, Ruan &amp; Li</strong><br><a href="https://doi.org/10.1016/j.measurement.2025.116968">[S3]</a></td><td>2025</td><td>Video dataset; not the IndoLR release</td><td>CSA-ResNet-34 + BiGRU-Mamba</td><td class="score" data-value="60.51">60.51%</td><td>—</td><td>Not reported here</td><td><span class="tag related">IDLRW</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="accuracy">
+      <h2 id="accuracy">Reported accuracy</h2>
+      <p class="note">Bars show test accuracy; phrase and word tasks are not pooled.</p>
+      <div class="bar-row"><span>LRCN-3Conv · words</span><div class="bar"><span style="width:95.42%"></span></div><b>95.42%</b></div>
+      <div class="bar-row"><span>Attention-BiLSTM · words</span><div class="bar"><span style="width:93.03%"></span></div><b>93.03%</b></div>
+      <div class="bar-row"><span>LRCN-3Conv · phrases</span><div class="bar"><span style="width:95.63%"></span></div><b>95.63%</b></div>
+      <div class="bar-row"><span>Attention-BiLSTM · phrases</span><div class="bar"><span style="width:95.18%"></span></div><b>95.18%</b></div>
+    </section>
+
+    <section class="grid studies section" aria-label="Study notes">
+      <article class="study">
+        <header><h3>S1 · Image pipeline</h3><div class="meta">Aripin &amp; Setiawan · 2024 · Applied Computational Intelligence and Soft Computing</div></header>
+        <ul><li>MediaPipe Face Mesh localizes the mouth region.</li><li>LRCN-3Conv is the reported best variant.</li><li>95.42% word and 95.63% phrase test accuracy.</li><li>Higher compute: 3.30M parameters; 0.62 / 0.83 GFLOPs.</li></ul>
+        <details><summary>Interpretation</summary><p>The image representation preserves spatial detail and wins the reported accuracy comparison. Its cost is substantially higher than coordinate-based modeling.</p></details>
+      </article>
+      <article class="study">
+        <header><h3>S2 · Landmark pipeline</h3><div class="meta">Utama, Hidayat &amp; Alfarozi · 2026 · JISEBI</div></header>
+        <ul><li>40 mouth landmarks become compact coordinate sequences.</li><li>Attention-BiLSTM reaches 93.03% word and 95.18% phrase test accuracy.</li><li>0.01 / 0.14 GFLOPs and 0.000530 / 0.011366 s inference.</li><li>Ablation reports BiGRU+Attention at 95.10% words and 94.58% phrases.</li></ul>
+        <details><summary>Interpretation</summary><p>Attention is the important design choice in the reported ablation. Landmark input removes most pixel redundancy, but results depend on reliable face tracking.</p></details>
+      </article>
+    </section>
+
+    <section class="section" aria-labelledby="method">
+      <h2 id="method">Evidence limits and next experiment</h2>
+      <ol>
+        <li>Both direct studies report IndoLR results, but this review did not recover a shared executable benchmark or identical random seeds.</li>
+        <li>The 2024 paper reports an 80:10:10 split; the 2026 paper reports its own train/validation/test procedure and also includes an ablation. Do not mix validation and test numbers.</li>
+        <li>Reported accuracy is classification accuracy, not sequence transcription quality. Word and phrase tasks have different class counts and temporal difficulty.</li>
+        <li>The 2025 CSA-ResNet-34 + BiGRU-Mamba result is on IDLRW: 48,083 videos and 100 words. It is related Indonesian work, not an IndoLR score, so it is excluded from the direct ranking.</li>
+      </ol>
+      <div class="callout"><strong>Recommended project benchmark:</strong> port both reference pipelines into `src/`, freeze one speaker-wise split, train with identical seeds, report macro-F1 plus accuracy, parameter count, GFLOPs, preprocessing time, and end-to-end latency. This will test whether LRCN-3Conv’s accuracy lead survives controlled reproduction.</div>
+    </section>
+
+    <section class="section" aria-labelledby="sources">
+      <h2 id="sources">Sources</h2>
+      <ol>
+        <li id="s1">Aripin &amp; Setiawan, <a href="https://doi.org/10.1155/2024/6479124">Indonesian visual speech recognition using Face Mesh and LRCN</a>. DOI: <code>10.1155/2024/6479124</code>.</li>
+        <li id="s2">Utama, Hidayat &amp; Alfarozi, <a href="https://e-journal.unair.ac.id/JISEBI/article/view/82251">A lightweight landmark-based Bahasa model using Attention-BiLSTM</a>. DOI: <code>10.20473/jisebi.12.2.269-282</code>.</li>
+        <li id="s3">Rahmatullah, Ruan &amp; Li, <a href="https://doi.org/10.1016/j.measurement.2025.116968">Indonesian visual speech study using IDLRW</a>. DOI: <code>10.1016/j.measurement.2025.116968</code>.</li>
+        <li><a href="https://www.kaggle.com/datasets/abasset/indolr">IndoLR Kaggle dataset</a> — project dataset release.</li>
+        <li><a href="https://zenodo.org/records/10432663">IDLRW Zenodo record</a> — separate 48,083-video, 100-word dataset.</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="wrap">Static, dependency-free HTML. Data values transcribed from linked publications and their reported tables. <a href="references.bib">BibTeX references</a>.</footer>
+
+  <script>
+    (() => {
+      const table = document.querySelector('#results');
+      const rows = [...table.querySelectorAll('tbody tr')];
+      const search = document.querySelector('#search');
+      const filters = [...document.querySelectorAll('.filter')];
+      let scope = 'all';
+      const apply = () => {
+        const query = search.value.trim().toLowerCase();
+        rows.forEach(row => {
+          const matchesScope = scope === 'all' || row.dataset.scope === scope;
+          const matchesText = row.textContent.toLowerCase().includes(query);
+          row.hidden = !(matchesScope && matchesText);
+        });
+      };
+      search.addEventListener('input', apply);
+      filters.forEach(button => button.addEventListener('click', () => {
+        scope = button.dataset.filter;
+        filters.forEach(item => item.classList.toggle('active', item === button));
+        apply();
+      }));
+      table.querySelectorAll('th').forEach((header, index) => header.addEventListener('click', () => {
+        const ascending = header.dataset.order !== 'asc';
+        header.dataset.order = ascending ? 'asc' : 'desc';
+        const value = row => {
+          const cell = row.children[index];
+          const numeric = Number(cell.dataset.value || cell.textContent.replace(/[^0-9.]/g, ''));
+          return Number.isNaN(numeric) ? cell.textContent.trim().toLowerCase() : numeric;
+        };
+        rows.sort((a, b) => {
+          const av = value(a), bv = value(b);
+          return (av < bv ? -1 : av > bv ? 1 : 0) * (ascending ? 1 : -1);
+        }).forEach(row => table.tBodies[0].appendChild(row));
+        apply();
+      }));
+    })();
+  </script>
+</body>
+</html>
