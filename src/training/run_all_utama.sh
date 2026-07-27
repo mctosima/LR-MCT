@@ -5,6 +5,8 @@
 #   Sanity run:  bash src/training/run_all_utama.sh --sanity
 set -euo pipefail
 
+export PYTHONUNBUFFERED=1
+
 SANITY=""
 if [[ "${1:-}" == "--sanity" ]]; then
     SANITY="--sanity"
@@ -38,7 +40,7 @@ $PYTHON -u -m src.preprocessing.utama_landmarks \
   --model-path face_landmarker.task \
   --log-level INFO \
   $SANITY \
-  2>&1 | tee -a "$LOG_DIR/utama_preprocessing.log"
+  2>&1 | tee -a "$LOG_DIR/utama_preprocessing.log" || true
 
 N_WORDS=$($PYTHON -c "from pathlib import Path; print(sum(1 for p in Path('precomputed_utama').rglob('*.npy') if int(p.parent.name.split()[0])<=10))")
 N_PHRASES=$($PYTHON -c "from pathlib import Path; print(sum(1 for p in Path('precomputed_utama').rglob('*.npy') if int(p.parent.name.split()[0])>10))")
