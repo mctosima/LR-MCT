@@ -40,14 +40,14 @@ uv venv --python 3.12
 uv pip install -r requirements.txt
 ```
 
-### 3. Run the notebooks
+### 3. Run the pipeline
 
-Open `LipReading_v5.ipynb` (image-based) or `LipReading_v6.ipynb` (landmark-based). The notebooks were originally written for Google Colab — adjust paths in the `CONFIG` cell for local use:
+The notebooks in `notebooks/` are reference material (originally written for Google Colab). We are developing proper Python scripts under `src/`:
 
-```python
-CONFIG["ROOT_VIDEO"] = "./data"
-CONFIG["OUT_ROOT"] = "./precomputed"
-CONFIG["MODEL_TASK_PATH"] = "./face_landmarker.task"
+```bash
+python -m src.preprocessing.extract_landmarks  # V6: landmark extraction
+# python -m src.preprocessing.extract_roi        # V5: ROI extraction
+# python -m src.training.train                    # training loop
 ```
 
 ---
@@ -56,10 +56,15 @@ CONFIG["MODEL_TASK_PATH"] = "./face_landmarker.task"
 
 ```
 .
-├── download_dataset.sh   # Fetches IndoLR + MediaPipe model
-├── requirements.txt      # Python deps (uv-compatible)
-├── LipReading_v5.ipynb   # Image-based pipeline
-├── LipReading_v6.ipynb   # Landmark-based pipeline
-├── data/                 # Downloaded dataset (gitignored)
-└── skills/               # Local notes (gitignored)
+├── notebooks/               # Reference notebooks (Colab originals)
+├── src/                     # Python source
+│   ├── preprocessing/       # Landmark / ROI extraction
+│   ├── models/              # BiGRU, LRCN architectures
+│   ├── training/            # Training loop, LOSO CV
+│   └── data/                # Dataset, dataloaders
+├── output/                  # Checkpoints, logs, figures
+├── docs/                    # Additional documentation
+├── data/                    # Downloaded dataset (gitignored)
+├── download_dataset.sh      # Fetches IndoLR + MediaPipe model
+└── requirements.txt         # Python deps (uv-compatible)
 ```

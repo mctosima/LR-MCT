@@ -1,11 +1,20 @@
 # Dataset (4.26 GB — downloaded via download_dataset.sh)
-data/
+/data/
 
 # MediaPipe Face Landmarker model (downloaded via download_dataset.sh)
 face_landmarker.task
 
+# Precomputed artifacts (large .npy files)
+precomputed/
+
+# Training outputs (checkpoints, logs, figures)
+output/checkpoints/*.pth
+output/checkpoints/*.pt
+output/logs/*.log
+output/figures/*.png
+
 # GPU PC access skill (contains credentials)
 skills/gpu-pc.md
 
-# Python venv (created on GPU PC)
+# Python venv
 .venv/
