@@ -182,16 +182,27 @@ def main() -> None:
     parser.add_argument("--device", choices=["auto", "cuda", "cpu"], default="auto")
     parser.add_argument("--epochs", type=int, default=100)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--sanity", action="store_true", help="Override to 3 epochs for quick smoke")
     args = parser.parse_args()
+    if args.sanity:
+        effective_epochs = 3
+        print(f"SANITY MODE: epochs {args.epochs} -> {effective_epochs}", flush=True)
+    else:
+        effective_epochs = args.epochs
     samples = collect_samples_aripin(args.precomputed_root, args.scope)
     labels = [class_name for _, class_name, _ in samples]
     speakers = [speaker for _, _, speaker in samples]
-    train_ds, val_ds = split_train_val(samples, labels, speakers, protocol=args.protocol, val_ratio=0.15, seed=args.seed)
+    unique_speakers = sorted(set(speakers))
+    actual_protocol = args.protocol
+    if args.protocol == "grouped" and len(unique_speakers) < 2:
+        print(f"WARNING: only {len(unique_speakers)} speaker(s) in sanity mode; falling back to random split", flush=True)
+        actual_protocol = "random"
+    train_ds, val_ds = split_train_val(samples, labels, speakers, protocol=actual_protocol, val_ratio=0.15, seed=args.seed)
     train_aripin(
         train_ds,
         val_ds,
         num_classes=len(train_ds.classes),
-        epochs=args.epochs,
+        epochs=effective_epochs,
         seed=args.seed,
         device=args.device,
         run_name=f"aripin_{args.protocol}_{args.scope}",

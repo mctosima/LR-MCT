@@ -172,12 +172,43 @@ def main() -> None:
     parser.add_argument("--output-root", type=Path, default=Path("precomputed_aripin"))
     parser.add_argument("--model-path", type=Path, default=Path("face_landmarker.task"))
     parser.add_argument("--log-level", choices=["DEBUG", "INFO", "WARNING"], default="INFO")
+    parser.add_argument("--sanity", action="store_true", help="Process only 1 speaker + 4 classes")
     args = parser.parse_args()
     logging.basicConfig(level=getattr(logging, args.log_level), format="%(levelname)s %(message)s")
     detector = init_detector(args.model_path)
-    counts = run_preprocessing_aripin(args.video_root, args.output_root, detector)
-    print(f"Processed words: {len(counts['word_samples'])}")
-    print(f"Processed phrases: {len(counts['phrase_samples'])}")
+    if args.sanity:
+        print(">>> SANITY preprocessing (1 speaker, 4 classes)", flush=True)
+        vroot = Path(args.video_root)
+        oroot = Path(args.output_root)
+        speakers = sorted(p for p in vroot.iterdir() if p.is_dir())
+        classes = sorted(p for p in speakers[0].iterdir() if p.is_dir())[:4]
+        oroot.mkdir(parents=True, exist_ok=True)
+        word_samples: list[tuple[str, str, str]] = []
+        phrase_samples: list[tuple[str, str, str]] = []
+        for class_dir in classes:
+            cn = _class_number(class_dir.name)
+            if cn is None:
+                continue
+            scope = "word" if cn <= 10 else "phrase"
+            seq_len = 30 if cn <= 10 else 40
+            out_dir = oroot / class_dir.name
+            out_dir.mkdir(parents=True, exist_ok=True)
+            for vp in sorted(class_dir.glob("*.mp4")):
+                out_path = out_dir / f"{_safe_name(speakers[0].name)}__{vp.stem}.npy"
+                if out_path.exists():
+                    (word_samples if scope == "word" else phrase_samples).append((str(out_path), class_dir.name, speakers[0].name))
+                    continue
+                seq = process_video_roi(vp, seq_len, detector)
+                if seq is None:
+                    continue
+                np.save(out_path, seq)
+                (word_samples if scope == "word" else phrase_samples).append((str(out_path), class_dir.name, speakers[0].name))
+        print(f"Processed words: {len(word_samples)}")
+        print(f"Processed phrases: {len(phrase_samples)}")
+    else:
+        counts = run_preprocessing_aripin(args.video_root, args.output_root, detector)
+        print(f"Processed words: {len(counts['word_samples'])}")
+        print(f"Processed phrases: {len(counts['phrase_samples'])}")
 
 
 if __name__ == "__main__":
