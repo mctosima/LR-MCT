@@ -222,3 +222,6 @@ def main() -> None:
         print(f"Processed words: {len(word_samples)}")
         print(f"Processed phrases: {len(phrase_samples)}")
     else:
+        counts = run_preprocessing(args.video_root, args.output_root, detector)
+        print(f"Processed words: {len(counts['word_samples'])}")
+        print(f"Processed phrases: {len(counts['phrase_samples'])}")
