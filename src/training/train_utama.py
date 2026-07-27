@@ -183,16 +183,22 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--sanity", action="store_true", help="Override to 3 epochs for quick smoke")
     args = parser.parse_args()
-
+    if args.sanity:
+        effective_epochs = 3
+        print(f"SANITY MODE: epochs {args.epochs} -> {effective_epochs}", flush=True)
+    else:
+        effective_epochs = args.epochs
     samples = collect_samples(args.precomputed_root, args.scope)
     labels = [class_name for _, class_name, _ in samples]
     speakers = [speaker for _, _, speaker in samples]
-    train_ds, val_ds = split_train_val(samples, labels, speakers, protocol=args.protocol, val_ratio=0.15, seed=args.seed)
+    unique_speakers = sorted(set(speakers))
+    actual_protocol = args.protocol
+    if args.protocol == "grouped" and len(unique_speakers) < 2:
+        print(f"WARNING: only {len(unique_speakers)} speaker(s) in sanity mode; falling back to random split", flush=True)
+        actual_protocol = "random"
+    train_ds, val_ds = split_train_val(samples, labels, speakers, protocol=actual_protocol, val_ratio=0.15, seed=args.seed)
     hidden_size = 64 if args.scope == "words" else 256
     run_name = f"utama_{args.protocol}_{args.scope}"
-    effective_epochs = 3 if args.sanity else args.epochs
-    if args.sanity:
-        print(f"SANITY MODE: epochs override {args.epochs} -> {effective_epochs}", flush=True)
     train_utama(
         train_ds,
         val_ds,
