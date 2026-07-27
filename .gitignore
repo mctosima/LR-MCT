@@ -1,0 +1,5 @@
+# Dataset (4.26 GB — downloaded via download_dataset.sh)
+data/
+
+# MediaPipe Face Landmarker model (downloaded via download_dataset.sh)
+face_landmarker.task
