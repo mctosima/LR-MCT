@@ -21,37 +21,6 @@ This is a fork of a student's final project. My goal is to help them reproduce a
 
 Both share: 40 MediaPipe face mesh landmarks (full outer + inner lip rings), LOSO 8-fold cross-validation, IndoLR dataset (10 word classes + 4 phrase classes).
 
----
-
-## Quick Start
-
-### 1. Download the dataset
-
-```bash
-bash download_dataset.sh
-```
-
-Downloads ~4.3 GB of videos to `./data/` plus the MediaPipe face landmarker model.
-
-### 2. Set up the environment
-
-```bash
-uv venv --python 3.12
-uv pip install -r requirements.txt
-```
-
-### 3. Run the pipeline
-
-The notebooks in `notebooks/` are reference material (originally written for Google Colab). We are developing proper Python scripts under `src/`:
-
-```bash
-python -m src.preprocessing.extract_landmarks  # V6: landmark extraction
-# python -m src.preprocessing.extract_roi        # V5: ROI extraction
-# python -m src.training.train                    # training loop
-```
-
----
-
 ## Repo Layout
 
 ```
