@@ -3,3 +3,6 @@ data/
 
 # MediaPipe Face Landmarker model (downloaded via download_dataset.sh)
 face_landmarker.task
+
+# GPU PC access skill (contains credentials)
+skills/gpu-pc.md
