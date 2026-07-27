@@ -16,5 +16,8 @@ output/figures/*.png
 # GPU PC access skill (contains credentials)
 skills/gpu-pc.md
 
+# Agent context file (local-only)
+AGENTS.md
+
 # Python venv
 .venv/
