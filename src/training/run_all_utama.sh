@@ -58,6 +58,8 @@ do
   echo "======================================================================="
   echo "[Training] protocol=$PROTOCOL  scope=$SCOPE — $(date)"
   echo "======================================================================="
+  RAW_LOG="$LOG_DIR/utama_${PROTOCOL}_${SCOPE}_raw.log"
+  set +e
   $PYTHON -u -m src.training.train_utama \
     --protocol "$PROTOCOL" \
     --scope "$SCOPE" \
@@ -66,7 +68,13 @@ do
     --epochs 100 \
     --seed 42 \
     $SANITY \
-    2>&1 | tee -a "$LOG_DIR/utama_${PROTOCOL}_${SCOPE}.log"
+    > "$RAW_LOG" 2>&1
+  RC=$?
+  set -e
+  cat "$RAW_LOG" | tee -a "$LOG_DIR/utama_${PROTOCOL}_${SCOPE}.log"
+  if [ "$RC" -ne 0 ]; then
+    echo "TRAINING FAILED (exit $RC) for $PROTOCOL $SCOPE — check $RAW_LOG"
+  fi
 done
 
 echo ""

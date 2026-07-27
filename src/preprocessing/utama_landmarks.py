@@ -197,7 +197,7 @@ def main() -> None:
         vroot = Path(args.video_root)
         oroot = Path(args.output_root)
         speakers = sorted(p for p in vroot.iterdir() if p.is_dir())
-        classes = sorted(p for p in speakers[0].iterdir() if p.is_dir())[:2]
+        classes = sorted(p for p in speakers[0].iterdir() if p.is_dir())[:4]
         oroot.mkdir(parents=True, exist_ok=True)
         word_samples: list[tuple[str, str, str]] = []
         phrase_samples: list[tuple[str, str, str]] = []
@@ -206,7 +206,7 @@ def main() -> None:
             if cn is None:
                 continue
             scope = "word" if cn <= 10 else "phrase"
-            seq_len = 40 if scope == "word" else 60
+            seq_len = 40 if cn <= 10 else 60
             out_dir = oroot / class_dir.name
             out_dir.mkdir(parents=True, exist_ok=True)
             for vp in sorted(class_dir.glob("*.mp4")):
