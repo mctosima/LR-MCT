@@ -7,10 +7,22 @@ face_landmarker.task
 # Precomputed artifacts (large .npy files)
 precomputed/
 
+# Utama replication artifacts
+/precomputed_utama/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# macOS metadata
+.DS_Store
+
 # Training outputs (checkpoints, logs, figures)
 output/checkpoints/*.pth
 output/checkpoints/*.pt
 output/logs/*.log
+output/logs/*.csv
+output/logs/*.json
 output/figures/*.png
 
 # GPU PC access skill (contains credentials)
