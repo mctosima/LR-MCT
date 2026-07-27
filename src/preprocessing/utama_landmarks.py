@@ -193,7 +193,7 @@ def main() -> None:
     logging.basicConfig(level=getattr(logging, args.log_level), format="%(levelname)s %(message)s")
     detector = init_detector(args.model_path)
     if args.sanity:
-        LOGGER.info("SANITY MODE: 1 speaker, first 2 classes")
+        print(">>> SANITY preprocessing starting (1 speaker, 2 classes)", flush=True)
         vroot = Path(args.video_root)
         oroot = Path(args.output_root)
         speakers = sorted(p for p in vroot.iterdir() if p.is_dir())
@@ -216,13 +216,9 @@ def main() -> None:
                     continue
                 seq = process_video(vp, seq_len, detector)
                 if seq is None:
-                    LOGGER.warning("No landmarks; skip %s", vp)
                     continue
                 np.save(out_path, seq)
                 (word_samples if scope == "word" else phrase_samples).append((str(out_path), class_dir.name, speakers[0].name))
         print(f"Processed words: {len(word_samples)}")
         print(f"Processed phrases: {len(phrase_samples)}")
     else:
-        counts = run_preprocessing(args.video_root, args.output_root, detector)
-        print(f"Processed words: {len(counts['word_samples'])}")
-        print(f"Processed phrases: {len(counts['phrase_samples'])}")
