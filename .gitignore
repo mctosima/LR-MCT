@@ -6,3 +6,6 @@ face_landmarker.task
 
 # GPU PC access skill (contains credentials)
 skills/gpu-pc.md
+
+# Python venv (created on GPU PC)
+.venv/
