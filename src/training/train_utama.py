@@ -203,3 +203,8 @@ def main() -> None:
         device=args.device,
         run_name=run_name,
     )
+
+
+
+if __name__ == "__main__":
+    main()
