@@ -37,3 +37,16 @@ Both share: 40 MediaPipe face mesh landmarks (full outer + inner lip rings), LOS
 ├── download_dataset.sh      # Fetches IndoLR + MediaPipe model
 └── requirements.txt         # Python deps (uv-compatible)
 ```
+
+## Documentation
+
+- [Project documentation home](docs/index.html)
+- [Literature review](docs/Literature-Review/index.html) — recent IndoLR studies, architecture comparison, metrics, and BibTeX
+- [Experiment report](docs/Experiment-Report/index.html) — Utama et al. replication results under random and speaker-grouped validation
+
+Latest replication results:
+
+| Protocol | Words | Phrases |
+|---|---:|---:|
+| Random 85:15 validation | **94.70%** | **99.20%** |
+| Speaker-grouped 85:15 validation | 50.65% | 25.00% |
