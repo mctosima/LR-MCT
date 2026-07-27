@@ -181,6 +181,7 @@ def main() -> None:
     parser.add_argument("--device", choices=["auto", "cuda", "cpu"], default="auto")
     parser.add_argument("--epochs", type=int, default=100)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--sanity", action="store_true", help="Override to 3 epochs for quick smoke")
     args = parser.parse_args()
 
     samples = collect_samples(args.precomputed_root, args.scope)
@@ -189,17 +190,16 @@ def main() -> None:
     train_ds, val_ds = split_train_val(samples, labels, speakers, protocol=args.protocol, val_ratio=0.15, seed=args.seed)
     hidden_size = 64 if args.scope == "words" else 256
     run_name = f"utama_{args.protocol}_{args.scope}"
+    effective_epochs = 3 if args.sanity else args.epochs
+    if args.sanity:
+        print(f"SANITY MODE: epochs override {args.epochs} -> {effective_epochs}", flush=True)
     train_utama(
         train_ds,
         val_ds,
         num_classes=len(train_ds.classes),
         hidden_size=hidden_size,
-        epochs=args.epochs,
+        epochs=effective_epochs,
         seed=args.seed,
         device=args.device,
         run_name=run_name,
     )
-
-
-if __name__ == "__main__":
-    main()

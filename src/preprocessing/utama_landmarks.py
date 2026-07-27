@@ -188,13 +188,41 @@ def main() -> None:
     parser.add_argument("--output-root", type=Path, default=Path("precomputed_utama"))
     parser.add_argument("--model-path", type=Path, default=Path("face_landmarker.task"))
     parser.add_argument("--log-level", default="INFO", choices=["DEBUG", "INFO", "WARNING"])
+    parser.add_argument("--sanity", action="store_true", help="Process only 1 speaker + 2 classes")
     args = parser.parse_args()
     logging.basicConfig(level=getattr(logging, args.log_level), format="%(levelname)s %(message)s")
     detector = init_detector(args.model_path)
-    counts = run_preprocessing(args.video_root, args.output_root, detector)
-    print(f"Processed words: {len(counts['word_samples'])}")
-    print(f"Processed phrases: {len(counts['phrase_samples'])}")
-
-
-if __name__ == "__main__":
-    main()
+    if args.sanity:
+        LOGGER.info("SANITY MODE: 1 speaker, first 2 classes")
+        vroot = Path(args.video_root)
+        oroot = Path(args.output_root)
+        speakers = sorted(p for p in vroot.iterdir() if p.is_dir())
+        classes = sorted(p for p in speakers[0].iterdir() if p.is_dir())[:2]
+        oroot.mkdir(parents=True, exist_ok=True)
+        word_samples: list[tuple[str, str, str]] = []
+        phrase_samples: list[tuple[str, str, str]] = []
+        for class_dir in classes:
+            cn = _class_number(class_dir.name)
+            if cn is None:
+                continue
+            scope = "word" if cn <= 10 else "phrase"
+            seq_len = 40 if scope == "word" else 60
+            out_dir = oroot / class_dir.name
+            out_dir.mkdir(parents=True, exist_ok=True)
+            for vp in sorted(class_dir.glob("*.mp4")):
+                out_path = out_dir / f"{_safe_name(speakers[0].name)}__{vp.stem}.npy"
+                if out_path.exists():
+                    (word_samples if scope == "word" else phrase_samples).append((str(out_path), class_dir.name, speakers[0].name))
+                    continue
+                seq = process_video(vp, seq_len, detector)
+                if seq is None:
+                    LOGGER.warning("No landmarks; skip %s", vp)
+                    continue
+                np.save(out_path, seq)
+                (word_samples if scope == "word" else phrase_samples).append((str(out_path), class_dir.name, speakers[0].name))
+        print(f"Processed words: {len(word_samples)}")
+        print(f"Processed phrases: {len(phrase_samples)}")
+    else:
+        counts = run_preprocessing(args.video_root, args.output_root, detector)
+        print(f"Processed words: {len(counts['word_samples'])}")
+        print(f"Processed phrases: {len(counts['phrase_samples'])}")
