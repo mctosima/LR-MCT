@@ -43,6 +43,8 @@
     td strong { color: var(--text); }
     .score { color: var(--green); font-weight: 800; white-space: nowrap; }
     .tag { display: inline-block; margin: 2px 4px 2px 0; padding: 2px 8px; border-radius: 999px; background: #203452; color: var(--accent); font-size: .76rem; }
+    .pdf-button { display: inline-block; margin: 4px 4px 0 0; padding: 3px 9px; border: 1px solid #2d6a82; border-radius: 999px; background: #123149; color: var(--accent); font-size: .76rem; font-weight: 700; text-decoration: none; white-space: nowrap; }
+    .pdf-button:hover { border-color: var(--accent); background: #1a4868; }
     .tag.related { color: var(--gold); background: #40351a; }
     .studies { grid-template-columns: repeat(2, 1fr); }
     .study { padding: 22px; }
@@ -97,8 +99,8 @@
             <th data-key="study">Study</th><th data-key="year">Year</th><th data-key="representation">Representation</th><th data-key="architecture">Architecture</th><th data-key="word">Word test</th><th data-key="phrase">Phrase test</th><th data-key="efficiency">Efficiency</th><th data-key="scope">Scope</th>
           </tr></thead>
           <tbody>
-            <tr data-scope="direct"><td><strong>Aripin &amp; Setiawan</strong><br><a href="https://doi.org/10.1155/2024/6479124">[S1]</a> <a href="pdf_paper/Aripin_Setiawan_2024_LRCN_IndoLR.pdf">[PDF]</a></td><td>2024</td><td>Mouth ROI images from MediaPipe Face Mesh</td><td>LRCN-3Conv</td><td class="score" data-value="95.42">95.42%</td><td class="score" data-value="95.63">95.63%</td><td>3,299,178 params<br>0.62 / 0.83 GFLOPs</td><td><span class="tag">Direct IndoLR</span></td></tr>
-            <tr data-scope="direct"><td><strong>Utama, Hidayat &amp; Alfarozi</strong><br><a href="https://doi.org/10.20473/jisebi.12.2.269-282">[S2]</a> <a href="pdf_paper/Utama_Hidayat_Alfarozi_2026_Attention_BiLSTM_IndoLR.pdf">[PDF]</a></td><td>2026</td><td>40 mouth landmarks + normalized coordinates</td><td>Attention-BiLSTM</td><td class="score" data-value="93.03">93.03%</td><td class="score" data-value="95.18">95.18%</td><td>175,499 / 2,271,749 params<br>0.01 / 0.14 GFLOPs</td><td><span class="tag">Direct IndoLR</span></td></tr>
+            <tr data-scope="direct"><td><strong>Aripin &amp; Setiawan</strong><br><a href="https://doi.org/10.1155/2024/6479124">[S1]</a> <a class="pdf-button" href="pdf_paper/Aripin_Setiawan_2024_LRCN_IndoLR.pdf" target="_blank" rel="noopener">Open PDF</a></td><td>2024</td><td>Mouth ROI images from MediaPipe Face Mesh</td><td>LRCN-3Conv</td><td class="score" data-value="95.42">95.42%</td><td class="score" data-value="95.63">95.63%</td><td>3,299,178 params<br>0.62 / 0.83 GFLOPs</td><td><span class="tag">Direct IndoLR</span></td></tr>
+            <tr data-scope="direct"><td><strong>Utama, Hidayat &amp; Alfarozi</strong><br><a href="https://doi.org/10.20473/jisebi.12.2.269-282">[S2]</a> <a class="pdf-button" href="pdf_paper/Utama_Hidayat_Alfarozi_2026_Attention_BiLSTM_IndoLR.pdf" target="_blank" rel="noopener">Open PDF</a></td><td>2026</td><td>40 mouth landmarks + normalized coordinates</td><td>Attention-BiLSTM</td><td class="score" data-value="93.03">93.03%</td><td class="score" data-value="95.18">95.18%</td><td>175,499 / 2,271,749 params<br>0.01 / 0.14 GFLOPs</td><td><span class="tag">Direct IndoLR</span></td></tr>
             <tr data-scope="related"><td><strong>Rahmatullah, Ruan &amp; Li</strong><br><a href="https://doi.org/10.1016/j.measurement.2025.116968">[S3]</a></td><td>2025</td><td>Video dataset; not the IndoLR release</td><td>CSA-ResNet-34 + BiGRU-Mamba</td><td class="score" data-value="60.51">60.51%</td><td>—</td><td>Not reported here</td><td><span class="tag related">IDLRW</span></td></tr>
           </tbody>
         </table>
@@ -141,8 +143,8 @@
     <section class="section" aria-labelledby="sources">
       <h2 id="sources">Sources</h2>
       <ol>
-        <li id="s1">Aripin &amp; Setiawan, <a href="https://doi.org/10.1155/2024/6479124">Indonesian visual speech recognition using Face Mesh and LRCN</a>. <a href="pdf_paper/Aripin_Setiawan_2024_LRCN_IndoLR.pdf">Local PDF</a>. DOI: <code>10.1155/2024/6479124</code>.</li>
-        <li id="s2">Utama, Hidayat &amp; Alfarozi, <a href="https://e-journal.unair.ac.id/JISEBI/article/view/82251">A lightweight landmark-based Bahasa model using Attention-BiLSTM</a>. <a href="pdf_paper/Utama_Hidayat_Alfarozi_2026_Attention_BiLSTM_IndoLR.pdf">Local PDF</a>. DOI: <code>10.20473/jisebi.12.2.269-282</code>.</li>
+        <li id="s1">Aripin &amp; Setiawan, <a href="https://doi.org/10.1155/2024/6479124">Indonesian visual speech recognition using Face Mesh and LRCN</a>. <a class="pdf-button" href="pdf_paper/Aripin_Setiawan_2024_LRCN_IndoLR.pdf" target="_blank" rel="noopener">Open PDF</a> DOI: <code>10.1155/2024/6479124</code>.</li>
+        <li id="s2">Utama, Hidayat &amp; Alfarozi, <a href="https://e-journal.unair.ac.id/JISEBI/article/view/82251">A lightweight landmark-based Bahasa model using Attention-BiLSTM</a>. <a class="pdf-button" href="pdf_paper/Utama_Hidayat_Alfarozi_2026_Attention_BiLSTM_IndoLR.pdf" target="_blank" rel="noopener">Open PDF</a> DOI: <code>10.20473/jisebi.12.2.269-282</code>.</li>
         <li id="s3">Rahmatullah, Ruan &amp; Li, <a href="https://doi.org/10.1016/j.measurement.2025.116968">Indonesian visual speech study using IDLRW</a>. Publisher PDF download was unavailable from this environment. DOI: <code>10.1016/j.measurement.2025.116968</code>.</li>
         <li><a href="https://www.kaggle.com/datasets/abasset/indolr">IndoLR Kaggle dataset</a> — project dataset release.</li>
         <li><a href="https://zenodo.org/records/10432663">IDLRW Zenodo record</a> — separate 48,083-video, 100-word dataset.</li>
