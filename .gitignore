@@ -9,6 +9,7 @@ precomputed/
 
 # Utama replication artifacts
 /precomputed_utama/
+/precomputed_aripin/
 
 # Python cache
 __pycache__/
