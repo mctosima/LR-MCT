@@ -13,7 +13,6 @@ import numpy as np
 import torch
 from sklearn.metrics import accuracy_score, classification_report, f1_score
 from torch import nn
-from torch.optim.lr_scheduler import CosineAnnealingWarmRestarts
 from torch.utils.data import DataLoader, Dataset
 
 from src.data.mct_dataset import MCTFusionDataset, collect_samples, split_train_val
@@ -53,7 +52,6 @@ def _collate_fn(batch: list[tuple[torch.Tensor, torch.Tensor, int]]) -> tuple[to
         t_lm = l.shape[0]
         roi_batch[i, :, :t_img] = r
         lm_batch[i, :t_lm] = l
-        # replicate last frame for landmark padding
         if t_lm < T_lm:
             lm_batch[i, t_lm:] = l[-1]
 
@@ -70,7 +68,6 @@ def _run_epoch(
     criterion: nn.Module,
     device: torch.device,
     optimizer: torch.optim.Optimizer | None = None,
-    scheduler: CosineAnnealingWarmRestarts | None = None,
 ) -> tuple[float, float, list[int], list[int]]:
     training = optimizer is not None
     model.train(training)
@@ -96,8 +93,6 @@ def _run_epoch(
 
     if not true:
         raise ValueError("DataLoader produced no samples")
-    if training and scheduler is not None:
-        scheduler.step()
     n = len(true)
     return total_loss / n, accuracy_score(true, predicted), true, predicted
 
@@ -108,7 +103,7 @@ def train_mct_lr(
     num_classes: int,
     epochs: int = 100,
     batch_size: int = 4,
-    lr: float = 0.0005,
+    lr: float = 0.001,
     weight_decay: float = 1e-4,
     seed: int = 42,
     device: str = "cuda",
@@ -145,7 +140,6 @@ def train_mct_lr(
 
     model = MCTLR(num_classes=num_classes).to(torch_device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
-    scheduler = CosineAnnealingWarmRestarts(optimizer, T_0=10, T_mult=2)
     criterion = nn.CrossEntropyLoss()
 
     output_dir = Path(output_dir)
@@ -159,8 +153,7 @@ def train_mct_lr(
     history: list[dict[str, float | int]] = []
     best_acc = -1.0
     best_epoch = 0
-    best_loss = float("inf")
-    patience = 15
+    patience = 25
     patience_counter = 0
 
     with csv_path.open("w", newline="") as f:
@@ -168,7 +161,7 @@ def train_mct_lr(
         writer.writeheader()
         for epoch in range(1, epochs + 1):
             train_loss, train_acc, _, _ = _run_epoch(
-                model, train_loader, criterion, torch_device, optimizer, scheduler,
+                model, train_loader, criterion, torch_device, optimizer,
             )
             val_loss, val_acc, _, _ = _run_epoch(model, val_loader, criterion, torch_device)
 
@@ -183,7 +176,6 @@ def train_mct_lr(
             if val_acc > best_acc:
                 best_acc = val_acc
                 best_epoch = epoch
-                best_loss = val_loss
                 patience_counter = 0
                 torch.save(
                     {
@@ -209,8 +201,8 @@ def train_mct_lr(
                 print(f"Early stopping at epoch {epoch} (no improvement for {patience} epochs)", flush=True)
                 break
 
-            if dry_run and epoch >= 2:
-                print("DRY RUN: stopping after 2 epochs", flush=True)
+            if dry_run and epoch >= 5:
+                print("DRY RUN: stopping after 5 epochs", flush=True)
                 break
 
     # Load best checkpoint for final evaluation
@@ -223,7 +215,6 @@ def train_mct_lr(
         "run_name": run_name,
         "best_val_acc": best_acc,
         "best_epoch": best_epoch,
-        "best_val_loss": best_loss,
         "final_val_loss": final_loss,
         "final_val_acc": final_acc,
         "final_val_f1_macro": f1_score(y_true, y_pred, average="macro", zero_division=0),
@@ -248,8 +239,8 @@ def train_mct_lr(
 # ---------------------------------------------------------------------------
 
 CONFIG: dict[str, dict[str, Any]] = {
-    "words":   {"batch_size": 4, "lr": 0.0005, "epochs": 100},
-    "phrases": {"batch_size": 4, "lr": 0.0005, "epochs": 100},
+    "words":   {"batch_size": 8, "lr": 0.001, "epochs": 150},
+    "phrases": {"batch_size": 8, "lr": 0.001, "epochs": 150},
 }
 
 
@@ -263,7 +254,7 @@ def main() -> None:
     parser.add_argument("--epochs", type=int, default=None)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--sanity", action="store_true", help="3-epoch smoke test")
-    parser.add_argument("--dry-run", action="store_true", help="2 epochs, save nothing")
+    parser.add_argument("--dry-run", action="store_true", help="5 epochs only")
     args = parser.parse_args()
 
     cfg = CONFIG[args.scope]
