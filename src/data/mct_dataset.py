@@ -23,35 +23,67 @@ Sample = tuple[str, str, str, str, str]  # (roi_path, lm_path, class_name, speak
 # Dataset
 # ---------------------------------------------------------------------------
 
-class MCTFusionDataset(Dataset[tuple[Tensor, Tensor, int]]):
-    """Yields ``(roi, landmarks, label)`` for matched fusion samples."""
+class MCTFusionDataset(Dataset):
+    """Yields ``(roi, landmarks, label)`` or ``(roi, landmarks, label, speaker_index)``
+    for matched fusion samples.
 
-    def __init__(self, samples: Sequence[Sample]) -> None:
+    Set ``include_speaker=True`` to receive a 4-tuple.
+    """
+
+    def __init__(
+        self,
+        samples: Sequence[Sample],
+        *,
+        include_speaker: bool = False,
+        class_to_idx: dict[str, int] | None = None,
+        speaker_to_idx: dict[str, int] | None = None,
+    ) -> None:
         self.samples = list(samples)
         if not self.samples:
             raise ValueError("Dataset cannot be empty")
-        classes = sorted({class_name for _, _, class_name, _, _ in self.samples})
-        self.class_to_idx = {c: i for i, c in enumerate(classes)}
+        self.include_speaker = include_speaker
+
+        if class_to_idx is not None:
+            classes_present = {class_name for _, _, class_name, _, _ in self.samples}
+            if not classes_present.issubset(class_to_idx.keys()):
+                raise ValueError("class_to_idx is missing one or more classes present in samples")
+            self.class_to_idx = class_to_idx
+        else:
+            classes = sorted({class_name for _, _, class_name, _, _ in self.samples})
+            self.class_to_idx = {c: i for i, c in enumerate(classes)}
+
         self.labels = [self.class_to_idx[c] for _, _, c, _, _ in self.samples]
+
+        if include_speaker:
+            if speaker_to_idx is not None:
+                speakers_present = {sp for _, _, _, sp, _ in self.samples}
+                if not speakers_present.issubset(speaker_to_idx.keys()):
+                    raise ValueError("speaker_to_idx is missing one or more speakers present in samples")
+                self.speaker_to_idx = speaker_to_idx
+            else:
+                speakers = sorted({sp for _, _, _, sp, _ in self.samples})
+                self.speaker_to_idx = {sp: i for i, sp in enumerate(speakers)}
+            self.speaker_labels = [self.speaker_to_idx[sp] for _, _, _, sp, _ in self.samples]
 
     def __len__(self) -> int:
         return len(self.samples)
 
-    def __getitem__(self, index: int) -> tuple[Tensor, Tensor, int]:
+    def __getitem__(self, index: int):
         roi_path, lm_path, _, _, _ = self.samples[index]
         roi = np.load(roi_path).astype(np.float32)
         lm = np.load(lm_path).astype(np.float32)
-        # roi: (T, 80, 80) → (1, T, 80, 80)
-        # lm:  (T, 80)
         if roi.ndim != 3 or roi.shape[1:] != (80, 80):
             raise ValueError(f"ROI shape mismatch in {roi_path}: {roi.shape}")
         if lm.ndim != 2 or lm.shape[1] != 80:
             raise ValueError(f"LM shape mismatch in {lm_path}: {lm.shape}")
-        return (
+        result = [
             torch.from_numpy(roi).unsqueeze(0),
             torch.from_numpy(lm),
             self.labels[index],
-        )
+        ]
+        if self.include_speaker:
+            result.append(self.speaker_labels[index])
+        return tuple(result)
 
 
 # ---------------------------------------------------------------------------
@@ -144,6 +176,8 @@ def split_train_val(
     protocol: str = "random",
     val_ratio: float = 0.15,
     seed: int = 42,
+    *,
+    include_speaker: bool = False,
 ) -> tuple[MCTFusionDataset, MCTFusionDataset]:
     """Split matched samples with random stratification or speaker grouping."""
     samples = list(samples)
@@ -171,4 +205,64 @@ def split_train_val(
     val_samples = [samples[int(i)] for i in val_idx]
     if not train_samples or not val_samples:
         raise ValueError("Split produced empty set")
+
+    if include_speaker:
+        full_class_to_idx: dict[str, int] = {}
+        full_speaker_to_idx: dict[str, int] = {}
+        classes_sorted = sorted({class_name for _, _, class_name, _, _ in samples})
+        speakers_sorted = sorted({speaker for _, _, _, speaker, _ in samples})
+        full_class_to_idx = {c: i for i, c in enumerate(classes_sorted)}
+        full_speaker_to_idx = {s: i for i, s in enumerate(speakers_sorted)}
+        return (
+            MCTFusionDataset(train_samples, include_speaker=True, class_to_idx=full_class_to_idx, speaker_to_idx=full_speaker_to_idx),
+            MCTFusionDataset(val_samples, include_speaker=True, class_to_idx=full_class_to_idx, speaker_to_idx=full_speaker_to_idx),
+        )
+
     return MCTFusionDataset(train_samples), MCTFusionDataset(val_samples)
+
+
+# ---------------------------------------------------------------------------
+# LOSO folds
+# ---------------------------------------------------------------------------
+
+def make_loso_folds(
+    samples: Sequence[Sample],
+) -> list[tuple[str, str, list[Sample], list[Sample], list[Sample]]]:
+    """Create leave-one-speaker-out folds from matched samples.
+
+    Fold ``i`` holds out speaker ``i`` as test, speaker ``(i+1)%N`` as
+    validation, and the remaining speakers as training.  Order is
+    lexicographic by speaker name, so folds are deterministic.
+
+    Returns:
+        List of ``(test_speaker, val_speaker, train_samples, val_samples, test_samples)``.
+
+    Raises:
+        ValueError: if fewer than 3 unique speakers are present.
+        AssertionError: if any partition is empty or speaker sets overlap.
+    """
+    samples = list(samples)
+    speakers = sorted({sp for _, _, _, sp, _ in samples})
+    n = len(speakers)
+    if n < 3:
+        raise ValueError(f"make_loso_folds requires at least 3 speakers, found {n}")
+
+    folds: list[tuple[str, str, list[Sample], list[Sample], list[Sample]]] = []
+    for i, test_sp in enumerate(speakers):
+        val_sp = speakers[(i + 1) % n]
+        train_sps = {s for j, s in enumerate(speakers) if j != i and j != (i + 1) % n}
+        train_samples = [s for s in samples if s[3] in train_sps]
+        val_samples = [s for s in samples if s[3] == val_sp]
+        test_samples = [s for s in samples if s[3] == test_sp]
+        assert train_samples, f"Fold {i}: train partition is empty"
+        assert val_samples, f"Fold {i}: val partition is empty"
+        assert test_samples, f"Fold {i}: test partition is empty"
+        train_sp_set = {s[3] for s in train_samples}
+        val_sp_set = {s[3] for s in val_samples}
+        test_sp_set = {s[3] for s in test_samples}
+        assert train_sp_set.isdisjoint(val_sp_set), f"Fold {i}: train/val overlap"
+        assert train_sp_set.isdisjoint(test_sp_set), f"Fold {i}: train/test overlap"
+        assert val_sp_set.isdisjoint(test_sp_set), f"Fold {i}: val/test overlap"
+        folds.append((test_sp, val_sp, train_samples, val_samples, test_samples))
+
+    return folds
