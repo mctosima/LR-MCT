@@ -5,32 +5,169 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>IndoLR Experiment Report</title>
 <style>
-:root{color-scheme:dark;--bg:#09101d;--panel:#111c2d;--panel2:#172943;--line:#2b4164;--text:#edf4ff;--muted:#aab9d2;--cyan:#7dd3fc;--green:#86efac;--amber:#fcd34d;--red:#fda4af}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 12% 0,#1e3a5f 0,transparent 34%),var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--cyan)}.wrap{width:min(1160px,calc(100% - 32px));margin:auto}header.hero{padding:64px 0 34px}.eyebrow{color:var(--cyan);font-size:.76rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}h1{font-size:clamp(2.4rem,5vw,4.5rem);line-height:1.02;letter-spacing:-.05em;max-width:850px;margin:10px 0}h2{margin:0 0 10px;font-size:1.45rem}h3{margin:0 0 7px;font-size:1.05rem}.lead{max-width:800px;color:var(--muted);font-size:1.08rem}.meta,.note{color:var(--muted);font-size:.9rem}.grid{display:grid;gap:16px}.cards{grid-template-columns:repeat(4,1fr);margin:26px 0}.card,.callout,.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 42px #0003}.card{padding:19px}.card small{color:var(--muted);display:block}.card strong{display:block;color:var(--green);font-size:1.55rem;margin-top:5px}.section{margin:40px 0}.callout{padding:23px;border-color:#28657b;background:linear-gradient(135deg,#112b42,var(--panel))}.callout strong{color:var(--amber)}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}input,button{font:inherit;border:1px solid var(--line);border-radius:999px;padding:9px 13px;background:var(--panel);color:var(--text)}input{border-radius:10px;flex:1;min-width:230px}button{cursor:pointer}button.active,button:hover{border-color:var(--cyan);background:#183756}table{width:100%;min-width:850px;border-collapse:collapse;background:var(--panel)}th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--cyan);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;white-space:nowrap}tr:last-child td{border:0}.score{font-weight:800;color:var(--green);white-space:nowrap}.pill{display:inline-block;border-radius:999px;padding:2px 8px;font-size:.75rem;background:#1e3b58;color:var(--cyan)}.pill.warn{background:#4b3315;color:var(--amber)}.barrow{display:grid;grid-template-columns:210px 1fr 70px;gap:10px;align-items:center;margin:13px 0}.bar{height:12px;border-radius:99px;background:#233450;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#38bdf8,#86efac);border-radius:inherit}.twocol{grid-template-columns:repeat(2,1fr)}.panel{padding:21px}code{color:#d8e8ff;background:#192944;padding:2px 5px;border-radius:4px}footer{padding:28px 0 54px;color:var(--muted);font-size:.88rem}@media(max-width:850px){.cards{grid-template-columns:repeat(2,1fr)}.twocol{grid-template-columns:1fr}}@media(max-width:540px){.cards{grid-template-columns:1fr}.barrow{grid-template-columns:1fr;gap:3px}}
+:root{color-scheme:dark;--bg:#09101d;--panel:#111c2d;--panel2:#172943;--line:#2b4164;--text:#edf4ff;--muted:#aab9d2;--cyan:#7dd3fc;--green:#86efac;--amber:#fcd34d;--red:#fda4af}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 12% 0,#1e3a5f 0,transparent 34%),var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--cyan)}.wrap{width:min(1160px,calc(100% - 32px));margin:auto}header.hero{padding:64px 0 34px}.eyebrow{color:var(--cyan);font-size:.76rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}h1{font-size:clamp(2.4rem,5vw,4.5rem);line-height:1.02;letter-spacing:-.05em;max-width:850px;margin:10px 0}h2{margin:0 0 10px;font-size:1.45rem}h3{margin:0 0 7px;font-size:1.05rem}p{margin:8px 0}.lead{max-width:780px;color:var(--muted);font-size:1.06rem}.meta{color:var(--muted);font-size:.88rem}.grid{display:grid;gap:16px}.cards{grid-template-columns:repeat(4,1fr);margin:28px 0}.card,.callout,.panel{background:color-mix(in srgb,var(--panel) 94%,transparent);border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 44px #0003}.card{padding:20px}.card strong{display:block;margin-top:8px;font-size:1.55rem;color:var(--green)}.card small{color:var(--muted)}.section{margin:42px 0}.callout{padding:24px;border-color:#2d6a82;background:linear-gradient(135deg,#10253a,var(--panel))}.callout strong{color:var(--amber)}.note{color:var(--muted);font-size:.92rem}.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0}input[type="search"]{flex:1 1 260px;min-width:220px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text);font:inherit}button{padding:9px 13px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--text);cursor:pointer;font:inherit}button:hover,button.active{border-color:var(--cyan);background:#17324c}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px}table{width:100%;min-width:930px;border-collapse:collapse;background:var(--panel)}th,td{padding:13px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--cyan);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;cursor:pointer;user-select:none}th:hover{color:var(--text)}tr:last-child td{border-bottom:0}td strong{color:var(--text)}.score{color:var(--green);font-weight:800;white-space:nowrap}.pill{display:inline-block;padding:2px 8px;border-radius:999px;background:#1a3a2a;color:var(--green);font-size:.76rem;margin-right:4px}.pill.warn{background:#3a351a;color:var(--amber)}.pill.loso{background:#1a2a3a;color:var(--cyan)}.barrow{display:grid;grid-template-columns:220px 1fr 64px;gap:10px;align-items:center;margin:12px 0}.bar{height:12px;overflow:hidden;border-radius:99px;background:#263452}.bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#38bdf8,#86efac)}.twocol{grid-template-columns:1fr 1fr;margin:28px 0}.panel{padding:22px}footer{padding:32px 0 56px;color:var(--muted);font-size:.9rem}@media (max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}.twocol{grid-template-columns:1fr}}@media (max-width:540px){.cards{grid-template-columns:1fr}.barrow{grid-template-columns:1fr;gap:3px}}
 </style>
 </head>
 <body>
-<header class="hero wrap"><div class="eyebrow">Experiment report · Utama + Aripin replication · MCT-LR fusion · RTX 5070</div><h1>Three architectures, one dataset, two protocols.</h1><p class="lead">Reimplementations of Utama et al. (Attention-BiLSTM, landmark), Aripin &amp; Setiawan (LRCN-3Conv, image), and MCT-LR (late-fusion multimodal) on IndoLR. Each model uses 85:15 train/validation under both random class-stratified and speaker-grouped splits. No test set.</p><p class="meta">Completed 27–29 July 2026 · <a href="../index.html">Documentation home</a> · <a href="../Literature-Review/index.html">Literature review</a></p></header>
+<header class="hero wrap"><div class="eyebrow">Experiment report · Utama + Aripin replication · MCT-LR + MCT-LR2 fusion · RTX 5070</div><h1>Four architectures, one dataset, three protocols.</h1><p class="lead">Reimplementations of Utama et al. (Attention-BiLSTM, landmark), Aripin &amp; Setiawan (LRCN-3Conv, image), MCT-LR (late-fusion multimodal), and MCT-LR2 (residual CNN + cross-attention + speaker-adversarial) on IndoLR. Each evaluated under random class-stratified, speaker-grouped, and leave-one-speaker-out protocols. 85:15 train/validation, no test set.</p><p class="meta">Completed 27–29 July 2026 · MCT-LR2 added 29 July 2026 · <a href="../index.html">Documentation home</a> · <a href="../Literature-Review/index.html">Literature review</a></p></header>
 <main class="wrap">
+
+<!-- ====== Utama ====== -->
 <section class="section"><h2>Utama et al. — Attention-BiLSTM (landmark)</h2></section>
-<section class="grid cards"><div class="card"><small>Random words</small><strong>94.70%</strong><span>macro F1 0.9468</span></div><div class="card"><small>Random phrases</small><strong>99.20%</strong><span>macro F1 0.9920</span></div><div class="card"><small>Grouped words</small><strong>50.65%</strong><span>macro F1 0.5102</span></div><div class="card"><small>Grouped phrases</small><strong>25.00%</strong><span>macro F1 0.1000</span></div></section>
+<section class="grid cards">
+<div class="card"><small>Random words</small><strong>94.70%</strong><span>macro F1 0.9468</span></div>
+<div class="card"><small>Random phrases</small><strong>99.20%</strong><span>macro F1 0.9920</span></div>
+<div class="card"><small>Grouped words</small><strong>50.65%</strong><span>macro F1 0.5102</span></div>
+<div class="card"><small>Grouped phrases</small><strong>25.00%</strong><span>macro F1 0.1000</span></div>
+</section>
 
+<!-- ====== Aripin ====== -->
 <section class="section"><h2>Aripin &amp; Setiawan — LRCN-3Conv (image)</h2></section>
-<section class="grid cards"><div class="card"><small>Random words</small><strong>98.88%</strong><span>macro F1 0.9887</span></div><div class="card"><small>Random phrases</small><strong>99.20%</strong><span>macro F1 0.9920</span></div><div class="card"><small>Grouped words</small><strong>50.93%</strong><span>macro F1 0.5052</span></div><div class="card"><small>Grouped phrases</small><strong>59.52%</strong><span>macro F1 0.5741</span></div></section>
+<section class="grid cards">
+<div class="card"><small>Random words</small><strong>98.88%</strong><span>macro F1 0.9887</span></div>
+<div class="card"><small>Random phrases</small><strong>99.20%</strong><span>macro F1 0.9920</span></div>
+<div class="card"><small>Grouped words</small><strong>50.93%</strong><span>macro F1 0.5052</span></div>
+<div class="card"><small>Grouped phrases</small><strong>59.52%</strong><span>macro F1 0.5741</span></div>
+</section>
 
-
-
+<!-- ====== MCT-LR ====== -->
 <section class="section"><h2>MCT-LR — Late-Fusion Multimodal (image + landmark)</h2><p class="note"><a href="mct-lr.html">Open dedicated MCT-LR design page →</a></p></section>
-<section class="grid cards"><div class="card"><small>Random words</small><strong>95.35%</strong><span>macro F1 0.9534</span></div><div class="card"><small>Random phrases</small><strong>96.39%</strong><span>macro F1 0.9638</span></div><div class="card"><small>Grouped words</small><strong>11.06%</strong><span>macro F1 0.0217</span></div><div class="card"><small>Grouped phrases</small><strong>34.76%</strong><span>macro F1 0.2427</span></div></section>
+<section class="grid cards">
+<div class="card"><small>Random words</small><strong>95.35%</strong><span>macro F1 0.9534</span></div>
+<div class="card"><small>Random phrases</small><strong>96.39%</strong><span>macro F1 0.9638</span></div>
+<div class="card"><small>Grouped words</small><strong>11.06%</strong><span>macro F1 0.0217</span></div>
+<div class="card"><small>Grouped phrases</small><strong>34.76%</strong><span>macro F1 0.2427</span></div>
+</section>
 
+<!-- ====== MCT-LR2 ====== -->
+<section class="section"><h2>MCT-LR2 — Residual CNN + Cross-Attention Fusion (image + landmark + speaker-adversarial)</h2></section>
+<section class="grid cards">
+<div class="card"><small>Random words</small><strong>97.59%</strong><span>macro F1 0.9761</span></div>
+<div class="card"><small>Random phrases</small><strong>95.18%</strong><span>macro F1 0.9521</span></div>
+<div class="card"><small>Grouped words</small><strong>43.87%</strong><span>macro F1 0.4430</span></div>
+<div class="card"><small>Grouped phrases</small><strong>28.81%</strong><span>macro F1 0.1628</span></div>
+</section>
 
+<!-- ====== Executive Finding ====== -->
+<section class="callout section"><h2>Executive finding</h2>
+<p><strong>Image-only (Aripin) still leads grouped evaluation.</strong> LRCN-3Conv achieves 98.88% random words, 99.20% random phrases, 50.93% grouped words, and 59.52% grouped phrases — the best unseen-speaker baseline among all four architectures.</p>
+<p><strong>MCT-LR2 partially addresses the fusion collapse.</strong> At 7.56M parameters with residual CNN + BiLSTM image stream, motion-augmented BiGRU landmark stream, bidirectional cross-attention fusion, and speaker-adversarial training, MCT-LR2 raises grouped-word accuracy from MCT-LR's catastrophic 11.06% to 43.87%. However, random-phrase accuracy drops to 95.18% and grouped phrases regress to 28.81%, well below Aripin's 59.52%. The grouped-phrase model early-stopped at epoch 9, suggesting instability in the adversarial signal for longer sequences.</p>
+<p><strong>LOSO 8-fold evaluation was introduced as a new protocol.</strong> MCT-LR2 LOSO pooled accuracy is 32.51% (words) and 27.63% (phrases), with extreme speaker-dependent variance (9.7%–59.6% per-fold for words). No existing baseline uses LOSO, so these establish the protocol; future LOSO runs of Aripin/Utama/MCT-LR are needed for comparison.</p>
+</section>
 
-<section class="callout section"><h2>Executive finding</h2><p><strong>Image-only (Aripin) leads across both protocols.</strong> LRCN-3Conv achieves 98.88% (random words), 99.20% (random phrases), and 59.52% (grouped phrases) — the best unseen-speaker result among all three architectures.</p><p><strong>Late-fusion (MCT-LR) offers no improvement.</strong> At 95.35% random words and 96.39% random phrases, it trails Aripin's image-only approach by 2–3 percentage points. On grouped evaluation the fusion model collapses to 11.06% (words) — worse than both single-stream baselines. Grouped phrases at 34.76% beats Utama's 25.00% but falls well short of Aripin's 59.52%.</p><p><strong>Landmark-only (Utama) is viable only with random splits.</strong> 94.70% random words is competitive, but grouped phrases at 25.00% (chance-level for 4 classes) confirms landmarks alone lack speaker-invariant signal.</p><p class="note">The fusion hypothesis remains open: combining ROI + landmark features should help unseen-speaker generalization, but simple late-fusion with independent backbones creates a bimodal model collapse. Cross-attention or contrastive fusion approaches may be needed.</p></section>
-<section class="section"><h2>Results</h2><p class="note">Click table headers to sort. Search by model, protocol, or scope.</p><div class="toolbar"><input id="search" type="search" placeholder="Filter results…" aria-label="Filter results"><button class="filter active" data-filter="all">All</button><button class="filter" data-filter="random">Random</button><button class="filter" data-filter="grouped">Grouped</button></div><div class="table-wrap"><table id="results"><thead><tr><th>Model</th><th>Protocol</th><th>Scope</th><th>Classes</th><th>Train</th><th>Val</th><th>Val acc</th><th>Macro F1</th><th>Best epoch</th><th>Params</th></tr></thead><tbody><tr data-protocol="random"><td>Utama (landmark)</td><td><span class="pill">Random</span></td><td>Words</td><td>10</td><td>3,530</td><td>623</td><td class="score" data-sort="94.70304975922953">94.70%</td><td class="score" data-sort="0.9467847328959585">0.9468</td><td>88/100</td><td>175,499</td></tr><tr data-protocol="random"><td>Utama (landmark)</td><td><span class="pill">Random</span></td><td>Phrases</td><td>4</td><td>1,405</td><td>249</td><td class="score" data-sort="99.19678714859438">99.20%</td><td class="score" data-sort="0.9919674796747967">0.9920</td><td>94/100</td><td>2,271,749</td></tr><tr data-protocol="grouped"><td>Utama (landmark)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score" data-sort="50.6505576208178">50.65%</td><td class="score" data-sort="0.5101962021578201">0.5102</td><td>99/100</td><td>175,499</td></tr><tr data-protocol="grouped"><td>Utama (landmark)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score" data-sort="25.0">25.00%</td><td class="score" data-sort="0.1">0.1000</td><td>1/100</td><td>2,271,749</td></tr><tr data-protocol="random"><td>Aripin (image)</td><td><span class="pill">Random</span></td><td>Words</td><td>10</td><td>3,530</td><td>623</td><td class="score" data-sort="98.8764">98.88%</td><td class="score" data-sort="0.9887">0.9887</td><td>90/100</td><td>1,678,722</td></tr><tr data-protocol="random"><td>Aripin (image)</td><td><span class="pill">Random</span></td><td>Phrases</td><td>4</td><td>1,405</td><td>249</td><td class="score" data-sort="99.19678714859438">99.20%</td><td class="score" data-sort="0.9920">0.9920</td><td>55/100</td><td>1,678,722</td></tr><tr data-protocol="grouped"><td>Aripin (image)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score" data-sort="50.9294">50.93%</td><td class="score" data-sort="0.5052">0.5052</td><td>86/100</td><td>1,678,722</td></tr><tr data-protocol="grouped"><td>Aripin (image)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score" data-sort="59.5238">59.52%</td><td class="score" data-sort="0.5741">0.5741</td><td>96/100</td><td>1,678,722</td></tr><tr data-protocol="random"><td>MCT-LR (fusion)</td><td><span class="pill">Random</span></td><td>Words</td><td>10</td><td>3,530</td><td>623</td><td class="score" data-sort="95.3451">95.35%</td><td class="score" data-sort="0.9534">0.9534</td><td>99/100</td><td>1,879,019</td></tr><tr data-protocol="random"><td>MCT-LR (fusion)</td><td><span class="pill">Random</span></td><td>Phrases</td><td>4</td><td>1,405</td><td>249</td><td class="score" data-sort="96.3855">96.39%</td><td class="score" data-sort="0.9638">0.9638</td><td>99/100</td><td>1,878,245</td></tr><tr data-protocol="grouped"><td>MCT-LR (fusion)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score" data-sort="11.0595">11.06%</td><td class="score" data-sort="0.0217">0.0217</td><td>9/100</td><td>1,879,019</td></tr><tr data-protocol="grouped"><td>MCT-LR (fusion)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score" data-sort="34.7619">34.76%</td><td class="score" data-sort="0.2427">0.2427</td><td>10/100</td><td>1,878,245</td></tr></tbody></table></div></section>
+<!-- ====== Results Table ====== -->
+<section class="section"><h2>Results</h2><p class="note">Click table headers to sort. Search by model, protocol, or scope.</p>
+<div class="toolbar">
+<input id="search" type="search" placeholder="Filter results…" aria-label="Filter results">
+<button class="filter active" data-filter="all">All</button>
+<button class="filter" data-filter="random">Random</button>
+<button class="filter" data-filter="grouped">Grouped</button>
+<button class="filter" data-filter="loso">LOSO</button>
+</div>
+<div class="table-wrap"><table id="results">
+<thead><tr><th>Model</th><th>Protocol</th><th>Scope</th><th>Classes</th><th>Train</th><th>Val</th><th>Val acc</th><th>Macro F1</th><th>Best epoch</th><th>Params</th></tr></thead>
+<tbody>
+<tr data-protocol="random"><td>Utama (landmark)</td><td><span class="pill">Random</span></td><td>Words</td><td>10</td><td>3,530</td><td>623</td><td class="score" data-sort="94.703">94.70%</td><td class="score" data-sort="0.9468">0.9468</td><td>88/100</td><td>175,499</td></tr>
+<tr data-protocol="random"><td>Utama (landmark)</td><td><span class="pill">Random</span></td><td>Phrases</td><td>4</td><td>1,405</td><td>249</td><td class="score" data-sort="99.197">99.20%</td><td class="score" data-sort="0.9920">0.9920</td><td>94/100</td><td>2,271,749</td></tr>
+<tr data-protocol="grouped"><td>Utama (landmark)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score" data-sort="50.651">50.65%</td><td class="score" data-sort="0.5102">0.5102</td><td>99/100</td><td>175,499</td></tr>
+<tr data-protocol="grouped"><td>Utama (landmark)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score" data-sort="25.000">25.00%</td><td class="score" data-sort="0.1000">0.1000</td><td>1/100</td><td>2,271,749</td></tr>
+<tr data-protocol="random"><td>Aripin (image)</td><td><span class="pill">Random</span></td><td>Words</td><td>10</td><td>3,530</td><td>623</td><td class="score" data-sort="98.876">98.88%</td><td class="score" data-sort="0.9887">0.9887</td><td>90/100</td><td>1,679,242</td></tr>
+<tr data-protocol="random"><td>Aripin (image)</td><td><span class="pill">Random</span></td><td>Phrases</td><td>4</td><td>1,405</td><td>249</td><td class="score" data-sort="99.197">99.20%</td><td class="score" data-sort="0.9920">0.9920</td><td>55/100</td><td>1,678,852</td></tr>
+<tr data-protocol="grouped"><td>Aripin (image)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score" data-sort="50.929">50.93%</td><td class="score" data-sort="0.5052">0.5052</td><td>86/100</td><td>1,679,242</td></tr>
+<tr data-protocol="grouped"><td>Aripin (image)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score" data-sort="59.524">59.52%</td><td class="score" data-sort="0.5741">0.5741</td><td>96/100</td><td>1,678,852</td></tr>
+<tr data-protocol="random"><td>MCT-LR (fusion)</td><td><span class="pill">Random</span></td><td>Words</td><td>10</td><td>3,530</td><td>623</td><td class="score" data-sort="95.345">95.35%</td><td class="score" data-sort="0.9534">0.9534</td><td>99/100</td><td>1,879,019</td></tr>
+<tr data-protocol="random"><td>MCT-LR (fusion)</td><td><span class="pill">Random</span></td><td>Phrases</td><td>4</td><td>1,405</td><td>249</td><td class="score" data-sort="96.386">96.39%</td><td class="score" data-sort="0.9638">0.9638</td><td>99/100</td><td>1,878,245</td></tr>
+<tr data-protocol="grouped"><td>MCT-LR (fusion)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score" data-sort="11.060">11.06%</td><td class="score" data-sort="0.0217">0.0217</td><td>9/100</td><td>1,879,019</td></tr>
+<tr data-protocol="grouped"><td>MCT-LR (fusion)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score" data-sort="34.762">34.76%</td><td class="score" data-sort="0.2427">0.2427</td><td>10/100</td><td>1,878,245</td></tr>
+<tr data-protocol="random"><td>MCT-LR2 (fusion)</td><td><span class="pill">Random</span></td><td>Words</td><td>10</td><td>3,530</td><td>623</td><td class="score" data-sort="97.59">97.59%</td><td class="score" data-sort="0.9761">0.9761</td><td>84/150</td><td>7,564,468</td></tr>
+<tr data-protocol="random"><td>MCT-LR2 (fusion)</td><td><span class="pill">Random</span></td><td>Phrases</td><td>4</td><td>1,405</td><td>249</td><td class="score" data-sort="95.18">95.18%</td><td class="score" data-sort="0.9521">0.9521</td><td>98/150</td><td>7,562,926</td></tr>
+<tr data-protocol="grouped"><td>MCT-LR2 (fusion)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score" data-sort="43.87">43.87%</td><td class="score" data-sort="0.4430">0.4430</td><td>63/150</td><td>7,564,468</td></tr>
+<tr data-protocol="grouped"><td>MCT-LR2 (fusion)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score" data-sort="28.81">28.81%</td><td class="score" data-sort="0.1628">0.1628</td><td>9/150</td><td>7,562,926</td></tr>
+<tr data-protocol="loso"><td>MCT-LR2 (fusion)</td><td><span class="pill loso">LOSO</span></td><td>Words</td><td>10</td><td>varies</td><td>1 spk</td><td class="score" data-sort="32.68">32.68%</td><td class="score" data-sort="0.2976">0.2976</td><td>varies</td><td>7,564,468</td></tr>
+<tr data-protocol="loso"><td>MCT-LR2 (fusion)</td><td><span class="pill loso">LOSO</span></td><td>Phrases</td><td>4</td><td>varies</td><td>1 spk</td><td class="score" data-sort="27.76">27.76%</td><td class="score" data-sort="0.1668">0.1668</td><td>varies</td><td>7,562,926</td></tr>
+</tbody></table></div>
+<p class="note">LOSO rows show per-fold mean accuracy ± sample std. Words fold std: 14.83%, Phrases: 12.20%.</p>
+</section>
 
+<!-- ====== Accuracy Bars ====== -->
+<section class="section"><h2>Accuracy by model and protocol</h2>
+<p class="note">Bars show validation accuracy; phrase and word tasks are not pooled.</p>
+<!-- Random -->
+<div class="barrow"><span>Aripin · random words</span><div class="bar"><i style="width:98.88%"></i></div><b>98.88%</b></div>
+<div class="barrow"><span>Aripin · random phrases</span><div class="bar"><i style="width:99.20%"></i></div><b>99.20%</b></div>
+<div class="barrow"><span>Utama · random phrases</span><div class="bar"><i style="width:99.20%"></i></div><b>99.20%</b></div>
+<div class="barrow"><span>MCT-LR2 · random words</span><div class="bar"><i style="width:97.59%"></i></div><b>97.59%</b></div>
+<div class="barrow"><span>MCT-LR · random phrases</span><div class="bar"><i style="width:96.39%"></i></div><b>96.39%</b></div>
+<div class="barrow"><span>MCT-LR · random words</span><div class="bar"><i style="width:95.35%"></i></div><b>95.35%</b></div>
+<div class="barrow"><span>MCT-LR2 · random phrases</span><div class="bar"><i style="width:95.18%"></i></div><b>95.18%</b></div>
+<div class="barrow"><span>Utama · random words</span><div class="bar"><i style="width:94.70%"></i></div><b>94.70%</b></div>
+<!-- Grouped -->
+<div class="barrow"><span>Aripin · grouped phrases</span><div class="bar"><i style="width:59.52%"></i></div><b>59.52%</b></div>
+<div class="barrow"><span>Aripin · grouped words</span><div class="bar"><i style="width:50.93%"></i></div><b>50.93%</b></div>
+<div class="barrow"><span>Utama · grouped words</span><div class="bar"><i style="width:50.65%"></i></div><b>50.65%</b></div>
+<div class="barrow"><span>MCT-LR2 · grouped words</span><div class="bar"><i style="width:43.87%"></i></div><b>43.87%</b></div>
+<div class="barrow"><span>MCT-LR · grouped phrases</span><div class="bar"><i style="width:34.76%"></i></div><b>34.76%</b></div>
+<div class="barrow"><span>MCT-LR2 · grouped phrases</span><div class="bar"><i style="width:28.81%"></i></div><b>28.81%</b></div>
+<div class="barrow"><span>Utama · grouped phrases</span><div class="bar"><i style="width:25.00%"></i></div><b>25.00%</b></div>
+<div class="barrow"><span>MCT-LR · grouped words</span><div class="bar"><i style="width:11.06%"></i></div><b>11.06%</b></div>
+<!-- LOSO -->
+<div class="barrow"><span>MCT-LR2 · LOSO words</span><div class="bar"><i style="width:32.68%"></i></div><b>32.68%</b></div>
+<div class="barrow"><span>MCT-LR2 · LOSO phrases</span><div class="bar"><i style="width:27.76%"></i></div><b>27.76%</b></div>
+</section>
 
-<section class="section"><h2>Accuracy by model and protocol</h2><div class="barrow"><span>Aripin · random words</span><div class="bar"><i style="width:98.8764%"></i></div><b>98.88%</b></div><div class="barrow"><span>Aripin · random phrases</span><div class="bar"><i style="width:99.1968%"></i></div><b>99.20%</b></div><div class="barrow"><span>MCT-LR · random phrases</span><div class="bar"><i style="width:96.3855%"></i></div><b>96.39%</b></div><div class="barrow"><span>MCT-LR · random words</span><div class="bar"><i style="width:95.3451%"></i></div><b>95.35%</b></div><div class="barrow"><span>Utama · random words</span><div class="bar"><i style="width:94.703%"></i></div><b>94.70%</b></div><div class="barrow"><span>Utama · random phrases</span><div class="bar"><i style="width:99.1968%"></i></div><b>99.20%</b></div><div class="barrow"><span>Aripin · grouped phrases</span><div class="bar"><i style="width:59.5238%"></i></div><b>59.52%</b></div><div class="barrow"><span>Aripin · grouped words</span><div class="bar"><i style="width:50.9294%"></i></div><b>50.93%</b></div><div class="barrow"><span>Utama · grouped words</span><div class="bar"><i style="width:50.6506%"></i></div><b>50.65%</b></div><div class="barrow"><span>MCT-LR · grouped phrases</span><div class="bar"><i style="width:34.7619%"></i></div><b>34.76%</b></div><div class="barrow"><span>Utama · grouped phrases</span><div class="bar"><i style="width:25%"></i></div><b>25.00%</b></div><div class="barrow"><span>MCT-LR · grouped words</span><div class="bar"><i style="width:11.0595%"></i></div><b>11.06%</b></div></section>
-<section class="grid twocol section"><article class="panel"><h3>Replication configuration</h3><ul><li>IndoLR: 5,807 videos, 8 speakers</li><li>Words: 4,153 videos, 10 classes</li><li>Phrases: 1,654 videos, 4 classes</li><li>40 lip landmarks × x/y = 80 features</li><li>Words: 40 frames; phrases: 60 frames</li><li>Per-frame mouth-box min/max normalization</li><li>Two-layer bidirectional LSTM + attention</li><li>Adam, learning rate 0.005, weight decay 1e-5</li><li>Batch size 32, dropout 0.5, 100 epochs</li></ul></article><article class="panel"><h3>Model validation</h3><ul><li>Word model: 175,499 trainable parameters</li><li>Phrase model: 2,271,749 trainable parameters</li><li>Counts match Utama et al. Table 2 exactly</li><li>Best checkpoint selected by validation accuracy</li><li>No augmentation or class weighting</li><li>No test set in this reproduction</li></ul><p class="note">All four checkpoints and JSON/CSV logs remain on the GPU PC under <code>output/checkpoints/</code> and <code>output/logs/</code>.</p></article></section>
-<section class="section"><h2>Artifacts</h2><ul><li><a href="../../src/training/run_all_utama.sh">Unified Utama run script</a></li><li><a href="../../src/training/run_all_aripin.sh">Unified Aripin run script</a></li><li><a href="../../src/training/run_all_mct_lr.sh">Unified MCT-LR run script</a></li><li><a href="../Literature-Review/index.html">Literature review</a></li><li><a href="https://doi.org/10.20473/jisebi.12.2.269-282">Utama et al. paper</a></li><li><a href="https://doi.org/10.1155/2024/6479124">Aripin &amp; Setiawan paper</a></li></ul></section>
-</main><footer class="wrap">Metrics transcribed from four completed GPU JSON reports. Accuracy here is validation accuracy, not test accuracy.</footer>
-<script>(()=>{const rows=[...document.querySelectorAll('#results tbody tr')],q=document.querySelector('#search'),bs=[...document.querySelectorAll('.filter')];let f='all';function rowText(r){return[...r.children].map(c=>c.innerText).join(' ').toLowerCase()}function apply(){let s=q.value.toLowerCase();rows.forEach(r=>r.hidden=!((f==='all'||r.dataset.protocol===f)&&rowText(r).includes(s)))}q.oninput=apply;bs.forEach(b=>b.onclick=()=>{f=b.dataset.filter;bs.forEach(x=>x.classList.toggle('active',x===b));apply()});document.querySelectorAll('th').forEach((h,i)=>h.onclick=()=>{let asc=h.dataset.order!=='asc';h.dataset.order=asc?'asc':'desc';rows.sort((a,b)=>{let x=a.children[i],y=b.children[i],av=Number(x.dataset.sort??x.innerText.replace(/[^0-9.]/g,'')),bv=Number(y.dataset.sort??y.innerText.replace(/[^0-9.]/g,''));if(Number.isNaN(av)||Number.isNaN(bv)){av=x.innerText;bv=y.innerText}return(av<bv?-1:av>bv?1:0)*(asc?1:-1)}).forEach(r=>r.parentNode.appendChild(r));apply()})})()</script>
+<!-- ====== LOSO Details ====== -->
+<section class="section"><h2>MCT-LR2 — LOSO 8-Fold Cross-Validation</h2>
+<p class="note">New protocol: each of 8 speakers held out as test, next speaker as validation, remaining 6 as training. Pooled accuracy aggregates all fold predictions. No existing baseline — future LOSO runs of Aripin/Utama/MCT-LR needed for comparison.</p>
+<section class="grid cards">
+<div class="card"><small>Words · pooled acc</small><strong>32.51%</strong><span>fold mean 32.68% &plusmn; 14.83%</span></div>
+<div class="card"><small>Words · pooled F1</small><strong>0.3324</strong><span>fold mean 0.2976 &plusmn; 0.1723</span></div>
+<div class="card"><small>Phrases · pooled acc</small><strong>27.63%</strong><span>fold mean 27.76% &plusmn; 12.20%</span></div>
+<div class="card"><small>Phrases · pooled F1</small><strong>0.2638</strong><span>fold mean 0.1668 &plusmn; 0.1550</span></div>
+</section>
+<p class="note">Per-fold word accuracy: Lulu 9.67%, Sandy 37.00%, Grace 40.60%, Jelly 24.40%, brrr 21.16%, Intan 32.99%, Indra 36.25%, Bella 59.40%. High variance indicates strong speaker-specific visual biases despite adversarial training.</p>
+</section>
+
+<!-- ====== Configuration ====== -->
+<section class="grid twocol section">
+<article class="panel"><h3>Replication configuration</h3><ul>
+<li>IndoLR: 5,807 videos, 8 speakers</li>
+<li>Words: 4,153 videos, 10 classes</li>
+<li>Phrases: 1,654 videos, 4 classes</li>
+<li>40 lip landmarks × x/y = 80 features</li>
+<li>Random/Grouped: 85:15 train/validation</li>
+<li>LOSO: 8-fold, 6 train / 1 val / 1 test</li>
+<li>Utama: Adam lr=0.005, wd=1e-5, batch=32, 100 epochs</li>
+<li>Aripin: Adam lr=0.0005, wd=1e-5, batch=4, 100 epochs</li>
+<li>MCT-LR: AdamW lr=0.001, wd=1e-4, batch=8, 150 epochs</li>
+<li>MCT-LR2: AdamW lr=3e-4, wd=1e-4, batch=4, 150 epochs</li>
+</ul></article>
+<article class="panel"><h3>MCT-LR2 architecture</h3><ul>
+<li>Image: ResNet-style 3-stage (32→64→128→256) + BiLSTM-2</li>
+<li>Landmark: coordinate + inter-frame delta + BiGRU-3</li>
+<li>Fusion: bidirectional cross-attention (two MHA blocks)</li>
+<li>Regularisation: modality dropout 0.1, label smoothing 0.1</li>
+<li>Speaker-adversarial: gradient reversal + cross-entropy</li>
+<li>Data augmentation: contrast/brightness/noise (ROI), scale/translate/noise (landmarks)</li>
+<li>Words: 7,564,468 params · Phrases: 7,562,926 params</li>
+<li>Selected by validation macro-F1; patience 20</li>
+</ul></article>
+</section>
+
+<!-- ====== Artifacts ====== -->
+<section class="section"><h2>Artifacts</h2><ul>
+<li><a href="../../src/training/run_all_utama.sh">Unified Utama run script</a></li>
+<li><a href="../../src/training/run_all_aripin.sh">Unified Aripin run script</a></li>
+<li><a href="../../src/training/run_all_mct_lr.sh">Unified MCT-LR run script</a></li>
+<li><a href="../../src/training/run_all_mct_lr2.sh">Unified MCT-LR2 run script</a></li>
+<li><a href="../Literature-Review/index.html">Literature review</a></li>
+<li><a href="https://doi.org/10.20473/jisebi.12.2.269-282">Utama et al. paper</a></li>
+<li><a href="https://doi.org/10.1155/2024/6479124">Aripin &amp; Setiawan paper</a></li>
+</ul></section>
+
+</main>
+<footer class="wrap">Metrics transcribed from GPU JSON reports for all four architectures. Accuracy is validation accuracy, not test accuracy. LOSO uses per-fold means ± std across 8 folds.</footer>
+<script>
+(()=>{
+const rows=[...document.querySelectorAll('#results tbody tr')],q=document.querySelector('#search'),bs=[...document.querySelectorAll('.filter')];let f='all';function rowText(r){return[...r.children].map(c=>c.innerText).join(' ').toLowerCase()}function apply(){let s=q.value.toLowerCase();rows.forEach(r=>r.hidden=!((f==='all'||r.dataset.protocol===f)&&rowText(r).includes(s)))}q.oninput=apply;bs.forEach(b=>b.onclick=()=>{f=b.dataset.filter;bs.forEach(x=>x.classList.toggle('active',x===b));apply()});document.querySelectorAll('th').forEach((h,i)=>h.onclick=()=>{let asc=h.dataset.order!=='asc';h.dataset.order=asc?'asc':'desc';rows.sort((a,b)=>{let x=a.children[i],y=b.children[i],av=Number(x.dataset.sort??x.innerText.replace(/[^0-9.]/g,'')),bv=Number(y.dataset.sort??y.innerText.replace(/[^0-9.]/g,''));if(Number.isNaN(av)||Number.isNaN(bv)){av=x.innerText;bv=y.innerText}return(av<bv?-1:av>bv?1:0)*(asc?1:-1)}).forEach(r=>r.parentNode.appendChild(r));apply()})})()
+</script>
 </body></html>
