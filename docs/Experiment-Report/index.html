@@ -5,47 +5,63 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>IndoLR Experiment Report</title>
 <style>
-:root{color-scheme:dark;--bg:#09101d;--panel:#111c2d;--panel2:#172943;--line:#2b4164;--text:#edf4ff;--muted:#aab9d2;--cyan:#7dd3fc;--green:#86efac;--amber:#fcd34d;--red:#fda4af}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 12% 0,#1e3a5f 0,transparent 34%),var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--cyan)}.wrap{width:min(1160px,calc(100% - 32px));margin:auto}header.hero{padding:64px 0 34px}.eyebrow{color:var(--cyan);font-size:.76rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}h1{font-size:clamp(2.4rem,5vw,4.5rem);line-height:1.02;letter-spacing:-.05em;max-width:850px;margin:10px 0}h2{margin:0 0 10px;font-size:1.45rem}h3{margin:0 0 7px;font-size:1.05rem}p{margin:8px 0}.lead{max-width:780px;color:var(--muted);font-size:1.06rem}.meta{color:var(--muted);font-size:.88rem}.grid{display:grid;gap:16px}.cards{grid-template-columns:repeat(4,1fr);margin:28px 0}.card,.callout,.panel{background:color-mix(in srgb,var(--panel) 94%,transparent);border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 44px #0003}.card{padding:20px}.card strong{display:block;margin-top:8px;font-size:1.55rem;color:var(--green)}.card small{color:var(--muted)}.section{margin:42px 0}.callout{padding:24px;border-color:#2d6a82;background:linear-gradient(135deg,#10253a,var(--panel))}.callout strong{color:var(--amber)}.note{color:var(--muted);font-size:.92rem}.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0}input[type="search"]{flex:1 1 260px;min-width:220px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text);font:inherit}button{padding:9px 13px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--text);cursor:pointer;font:inherit}button:hover,button.active{border-color:var(--cyan);background:#17324c}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px}table{width:100%;min-width:930px;border-collapse:collapse;background:var(--panel)}th,td{padding:13px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--cyan);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;cursor:pointer;user-select:none}th:hover{color:var(--text)}tr:last-child td{border-bottom:0}td strong{color:var(--text)}.score{color:var(--green);font-weight:800;white-space:nowrap}.pill{display:inline-block;padding:2px 8px;border-radius:999px;background:#1a3a2a;color:var(--green);font-size:.76rem;margin-right:4px}.pill.warn{background:#3a351a;color:var(--amber)}.pill.loso{background:#1a2a3a;color:var(--cyan)}.barrow{display:grid;grid-template-columns:220px 1fr 64px;gap:10px;align-items:center;margin:12px 0}.bar{height:12px;overflow:hidden;border-radius:99px;background:#263452}.bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#38bdf8,#86efac)}.twocol{grid-template-columns:1fr 1fr;margin:28px 0}.panel{padding:22px}footer{padding:32px 0 56px;color:var(--muted);font-size:.9rem}@media (max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}.twocol{grid-template-columns:1fr}}@media (max-width:540px){.cards{grid-template-columns:1fr}.barrow{grid-template-columns:1fr;gap:3px}}
+:root{color-scheme:dark;--bg:#09101d;--panel:#111c2d;--panel2:#172943;--line:#2b4164;--text:#edf4ff;--muted:#aab9d2;--cyan:#7dd3fc;--green:#86efac;--amber:#fcd34d;--red:#fda4af}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 12% 0,#1e3a5f 0,transparent 34%),var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--cyan)}.wrap{width:min(1160px,calc(100% - 32px));margin:auto}header.hero{padding:64px 0 34px}.eyebrow{color:var(--cyan);font-size:.76rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}h1{font-size:clamp(2.4rem,5vw,4.5rem);line-height:1.02;letter-spacing:-.05em;max-width:850px;margin:10px 0}h2{margin:0 0 10px;font-size:1.45rem}h3{margin:0 0 7px;font-size:1.05rem}p{margin:8px 0}.lead{max-width:780px;color:var(--muted);font-size:1.06rem}.meta{color:var(--muted);font-size:.88rem}.grid{display:grid;gap:16px}.cards{grid-template-columns:repeat(4,1fr);margin:28px 0}.card,.callout,.panel{background:color-mix(in srgb,var(--panel) 94%,transparent);border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 44px #0003}.card{padding:20px}.card strong{display:block;margin-top:8px;font-size:1.55rem;color:var(--green)}.card small{color:var(--muted)}.section{margin:42px 0}.callout{padding:24px;border-color:#2d6a82;background:linear-gradient(135deg,#10253a,var(--panel))}.callout strong{color:var(--amber)}.note{color:var(--muted);font-size:.92rem}.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0}input[type="search"]{flex:1 1 260px;min-width:220px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text);font:inherit}button{padding:9px 13px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--text);cursor:pointer;font:inherit}button:hover,button.active{border-color:var(--cyan);background:#17324c}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px}table{width:100%;min-width:930px;border-collapse:collapse;background:var(--panel)}th,td{padding:13px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--cyan);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;cursor:pointer;user-select:none}th:hover{color:var(--text)}tr:last-child td{border-bottom:0}td strong{color:var(--text)}.score{color:var(--green);font-weight:800;white-space:nowrap}.score.lo{color:var(--amber)}.pill{display:inline-block;padding:2px 8px;border-radius:999px;background:#1a3a2a;color:var(--green);font-size:.76rem;margin-right:4px}.pill.warn{background:#3a351a;color:var(--amber)}.pill.loso{background:#1a2a3a;color:var(--cyan)}.barrow{display:grid;grid-template-columns:220px 1fr 64px;gap:10px;align-items:center;margin:12px 0}.bar{height:12px;overflow:hidden;border-radius:99px;background:#263452}.bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#38bdf8,#86efac)}.twocol{grid-template-columns:1fr 1fr;margin:28px 0}.panel{padding:22px}footer{padding:32px 0 56px;color:var(--muted);font-size:.9rem}
+
+/* ── comparison matrix ── */
+.matrix{display:grid;grid-template-columns:180px repeat(4,1fr);gap:2px;margin:28px 0;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--line)}.matrix>*{background:var(--panel);padding:14px 12px}.matrix .rh{color:var(--cyan);font-size:.72rem;font-weight:800;text-transform:uppercase;text-align:center;letter-spacing:.04em}.matrix .ch{font-weight:800;font-size:.92rem;display:flex;align-items:center;gap:6px}.matrix .ch small{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}.matrix .val{text-align:center;font-weight:700}.matrix .val.best{color:var(--green)}.matrix .val.warn{color:var(--amber)}
+
+/* ── design-page button ── */
+.btn-design{display:inline-flex;align-items:center;gap:5px;margin-left:12px;padding:4px 12px;border:1px solid var(--cyan);border-radius:999px;color:var(--cyan);font-size:.72rem;font-weight:700;text-decoration:none;white-space:nowrap;transition:background .15s}.btn-design:hover{background:#17324c}.btn-design svg{width:11px;height:11px}
+
+@media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}.twocol{grid-template-columns:1fr}.matrix{grid-template-columns:120px repeat(4,1fr);font-size:.82rem}}@media(max-width:540px){.cards{grid-template-columns:1fr}.barrow{grid-template-columns:1fr;gap:3px}.matrix{grid-template-columns:90px repeat(4,1fr);font-size:.72rem}.matrix .ch{font-size:.76rem}}
 </style>
 </head>
 <body>
 <header class="hero wrap"><div class="eyebrow">Experiment report · Utama + Aripin replication · MCT-LR + MCT-LR2 fusion · RTX 5070</div><h1>Four architectures, one dataset, three protocols.</h1><p class="lead">Reimplementations of Utama et al. (Attention-BiLSTM, landmark), Aripin &amp; Setiawan (LRCN-3Conv, image), MCT-LR (late-fusion multimodal), and MCT-LR2 (residual CNN + cross-attention + speaker-adversarial) on IndoLR. Each evaluated under random class-stratified, speaker-grouped, and leave-one-speaker-out protocols. 85:15 train/validation, no test set.</p><p class="meta">Completed 27–29 July 2026 · MCT-LR2 added 29 July 2026 · <a href="../index.html">Documentation home</a> · <a href="../Literature-Review/index.html">Literature review</a></p></header>
 <main class="wrap">
 
-<!-- ====== Utama ====== -->
-<section class="section"><h2>Utama et al. — Attention-BiLSTM (landmark)</h2></section>
-<section class="grid cards">
-<div class="card"><small>Random words</small><strong>94.70%</strong><span>macro F1 0.9468</span></div>
-<div class="card"><small>Random phrases</small><strong>99.20%</strong><span>macro F1 0.9920</span></div>
-<div class="card"><small>Grouped words</small><strong>50.65%</strong><span>macro F1 0.5102</span></div>
-<div class="card"><small>Grouped phrases</small><strong>25.00%</strong><span>macro F1 0.1000</span></div>
-</section>
+<!-- ====== Model Comparison Matrix ====== -->
+<section class="section"><h2>Model comparison</h2><p class="note">Validation accuracy (85:15 split). Click any design button for architecture details.</p>
 
-<!-- ====== Aripin ====== -->
-<section class="section"><h2>Aripin &amp; Setiawan — LRCN-3Conv (image)</h2></section>
-<section class="grid cards">
-<div class="card"><small>Random words</small><strong>98.88%</strong><span>macro F1 0.9887</span></div>
-<div class="card"><small>Random phrases</small><strong>99.20%</strong><span>macro F1 0.9920</span></div>
-<div class="card"><small>Grouped words</small><strong>50.93%</strong><span>macro F1 0.5052</span></div>
-<div class="card"><small>Grouped phrases</small><strong>59.52%</strong><span>macro F1 0.5741</span></div>
-</section>
+<div class="matrix">
+<div class="rh"></div>
+<div class="rh">Rand Words</div>
+<div class="rh">Rand Phrases</div>
+<div class="rh">Grp Words</div>
+<div class="rh">Grp Phrases</div>
 
-<!-- ====== MCT-LR ====== -->
-<section class="section"><h2>MCT-LR — Late-Fusion Multimodal (image + landmark)</h2><p class="note"><a href="mct-lr.html">Open dedicated MCT-LR design page →</a></p></section>
-<section class="grid cards">
-<div class="card"><small>Random words</small><strong>95.35%</strong><span>macro F1 0.9534</span></div>
-<div class="card"><small>Random phrases</small><strong>96.39%</strong><span>macro F1 0.9638</span></div>
-<div class="card"><small>Grouped words</small><strong>11.06%</strong><span>macro F1 0.0217</span></div>
-<div class="card"><small>Grouped phrases</small><strong>34.76%</strong><span>macro F1 0.2427</span></div>
-</section>
+<div class="ch">Utama<small>0.18M</small></div>
+<div class="val">94.70%</div>
+<div class="val">99.20%</div>
+<div class="val">50.65%</div>
+<div class="val warn">25.00%</div>
 
-<!-- ====== MCT-LR2 ====== -->
-<section class="section"><h2>MCT-LR2 — Residual CNN + Cross-Attention Fusion (image + landmark + speaker-adversarial)</h2></section>
-<section class="grid cards">
-<div class="card"><small>Random words</small><strong>97.59%</strong><span>macro F1 0.9761</span></div>
-<div class="card"><small>Random phrases</small><strong>95.18%</strong><span>macro F1 0.9521</span></div>
-<div class="card"><small>Grouped words</small><strong>43.87%</strong><span>macro F1 0.4430</span></div>
-<div class="card"><small>Grouped phrases</small><strong>28.81%</strong><span>macro F1 0.1628</span></div>
+<div class="ch">Aripin<small>1.68M</small></div>
+<div class="val best">98.88%</div>
+<div class="val best">99.20%</div>
+<div class="val">50.93%</div>
+<div class="val best">59.52%</div>
+
+<div class="ch">MCT-LR <a class="btn-design" href="mct-lr.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" width="11" height="11"><path d="M6 4h8M6 8h8M6 12h8M4 4v.01M4 8v.01M4 12v.01"/></svg>Design</a><small>1.88M</small></div>
+<div class="val">95.35%</div>
+<div class="val">96.39%</div>
+<div class="val warn">11.06%</div>
+<div class="val warn">34.76%</div>
+
+<div class="ch">MCT-LR2 <a class="btn-design" href="mct-lr2.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" width="11" height="11"><path d="M6 4h8M6 8h8M6 12h8M4 4v.01M4 8v.01M4 12v.01"/></svg>Design</a><small>7.56M</small></div>
+<div class="val">97.59%</div>
+<div class="val">95.18%</div>
+<div class="val">43.87%</div>
+<div class="val warn">28.81%</div>
+
+<div class="ch">MCT-LR2<small>LOSO</small></div>
+<div class="val">32.68%</div>
+<div class="val">27.76%</div>
+<div class="val" style="color:var(--muted)">—</div>
+<div class="val" style="color:var(--muted)">—</div>
+</div>
+
+<p class="note">LOSO row shows 8-fold mean accuracy ± std. No existing LOSO baseline for comparison. <span class="score">best</span> = highest in column. <span class="score lo">warn</span> = chance-level or near-chance.</p>
 </section>
 
 <!-- ====== Executive Finding ====== -->
@@ -92,7 +108,6 @@
 <!-- ====== Accuracy Bars ====== -->
 <section class="section"><h2>Accuracy by model and protocol</h2>
 <p class="note">Bars show validation accuracy; phrase and word tasks are not pooled.</p>
-<!-- Random -->
 <div class="barrow"><span>Aripin · random words</span><div class="bar"><i style="width:98.88%"></i></div><b>98.88%</b></div>
 <div class="barrow"><span>Aripin · random phrases</span><div class="bar"><i style="width:99.20%"></i></div><b>99.20%</b></div>
 <div class="barrow"><span>Utama · random phrases</span><div class="bar"><i style="width:99.20%"></i></div><b>99.20%</b></div>
@@ -101,7 +116,6 @@
 <div class="barrow"><span>MCT-LR · random words</span><div class="bar"><i style="width:95.35%"></i></div><b>95.35%</b></div>
 <div class="barrow"><span>MCT-LR2 · random phrases</span><div class="bar"><i style="width:95.18%"></i></div><b>95.18%</b></div>
 <div class="barrow"><span>Utama · random words</span><div class="bar"><i style="width:94.70%"></i></div><b>94.70%</b></div>
-<!-- Grouped -->
 <div class="barrow"><span>Aripin · grouped phrases</span><div class="bar"><i style="width:59.52%"></i></div><b>59.52%</b></div>
 <div class="barrow"><span>Aripin · grouped words</span><div class="bar"><i style="width:50.93%"></i></div><b>50.93%</b></div>
 <div class="barrow"><span>Utama · grouped words</span><div class="bar"><i style="width:50.65%"></i></div><b>50.65%</b></div>
@@ -110,7 +124,6 @@
 <div class="barrow"><span>MCT-LR2 · grouped phrases</span><div class="bar"><i style="width:28.81%"></i></div><b>28.81%</b></div>
 <div class="barrow"><span>Utama · grouped phrases</span><div class="bar"><i style="width:25.00%"></i></div><b>25.00%</b></div>
 <div class="barrow"><span>MCT-LR · grouped words</span><div class="bar"><i style="width:11.06%"></i></div><b>11.06%</b></div>
-<!-- LOSO -->
 <div class="barrow"><span>MCT-LR2 · LOSO words</span><div class="bar"><i style="width:32.68%"></i></div><b>32.68%</b></div>
 <div class="barrow"><span>MCT-LR2 · LOSO phrases</span><div class="bar"><i style="width:27.76%"></i></div><b>27.76%</b></div>
 </section>
@@ -150,6 +163,7 @@
 <li>Data augmentation: contrast/brightness/noise (ROI), scale/translate/noise (landmarks)</li>
 <li>Words: 7,564,468 params · Phrases: 7,562,926 params</li>
 <li>Selected by validation macro-F1; patience 20</li>
+<li><a href="mct-lr2.html">Full architecture diagram →</a></li>
 </ul></article>
 </section>
 
