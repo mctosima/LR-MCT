@@ -455,6 +455,21 @@ def main() -> None:
                 },
                 dry_run=args.dry_run and not args.sanity,
             )
+            result["fold"] = fi
+            result["test_speaker"] = test_sp
+            result["val_speaker"] = val_sp
+            # Persist fold/speaker/test into per-fold JSON on disk
+            fold_json_path = Path("output/logs") / f"{run_name}.json"
+            if fold_json_path.exists():
+                fold_data = json.loads(fold_json_path.read_text())
+                fold_data["fold"] = fi
+                fold_data["test_speaker"] = test_sp
+                fold_data["val_speaker"] = val_sp
+                fold_data["test_y_true"] = result.get("test_y_true", [])
+                fold_data["test_y_pred"] = result.get("test_y_pred", [])
+                fold_data["final_test_acc"] = result.get("final_test_acc")
+                fold_data["final_test_f1_macro"] = result.get("final_test_f1_macro")
+                fold_json_path.write_text(json.dumps(fold_data, indent=2))
             fold_results.append(result)
 
         if args.fold is not None:
