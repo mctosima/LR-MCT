@@ -20,7 +20,7 @@ from torch.nn import functional as F
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence, pad_sequence
 
 
-_ATTN_MASK_VALUE = -1e9
+_ATTN_MASK_VALUE = -1e4  # fits fp16 under AMP autocast; sufficient for softmax masking
 
 
 class _ConvBlock(nn.Module):
