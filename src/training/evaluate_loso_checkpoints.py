@@ -41,6 +41,11 @@ def evaluate_single(fold_json_path: str, samples: list, folds: list) -> None:
         return
 
     fold_idx = data.get("fold", -1)
+    if fold_idx < 0:
+        # Fallback: parse from filename pattern fold{N}_
+        import re
+        m = re.search(r'fold(\d+)_', jpath.name)
+        fold_idx = int(m.group(1)) if m else -1
     if fold_idx < 0 or fold_idx >= len(folds):
         print(f"SKIP {jpath.name}: invalid fold {fold_idx}")
         return
