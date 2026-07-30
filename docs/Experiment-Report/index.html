@@ -81,14 +81,13 @@
 <p><strong>Aripin LOSO establishes an image-only unseen-speaker baseline.</strong> Under 8-fold LOSO, Aripin achieves 28.35% pooled word accuracy and 45.51% pooled phrase accuracy — the latter surpassing MCT-LR2's 27.63% by +17.88pp. Aripin's lightweight image-only LRCN generalises better to unseen phrase speakers than MCT-LR2's heavier multimodal fusion. Speaker variance remains high (word fold range: 15.80%–39.58%, phrase range: 31.50%–74.09%).</p>
 </section>
 
-<!-- ====== Results Table ====== -->
-<section class="section"><h2>Results</h2><p class="note">Click table headers to sort. Search by model, protocol, or scope.</p>
+<!-- ====== Results Table (Random + Grouped) ====== -->
+<section class="section"><h2>Results — Random &amp; Grouped (85:15 validation)</h2><p class="note">Click table headers to sort. Search by model, protocol, or scope.</p>
 <div class="toolbar">
 <input id="search" type="search" placeholder="Filter results…" aria-label="Filter results">
 <button class="filter active" data-filter="all">All</button>
 <button class="filter" data-filter="random">Random</button>
 <button class="filter" data-filter="grouped">Grouped</button>
-<button class="filter" data-filter="loso">LOSO</button>
 </div>
 <div class="table-wrap"><table id="results">
 <thead><tr><th>Model</th><th>Protocol</th><th>Scope</th><th>Classes</th><th>Train</th><th>Val</th><th>Val acc</th><th>Macro F1</th><th>Best epoch</th><th>Params</th></tr></thead>
@@ -113,12 +112,19 @@
 <tr data-protocol="random"><td>MCT-LR2 (fusion)</td><td><span class="pill">Random</span></td><td>Phrases</td><td>4</td><td>1,405</td><td>249</td><td class="score" data-sort="95.18">95.18%</td><td class="score" data-sort="0.9521">0.9521</td><td>98/150</td><td>7,562,926</td></tr>
 <tr data-protocol="grouped"><td>MCT-LR2 (fusion)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score" data-sort="43.87">43.87%</td><td class="score" data-sort="0.4430">0.4430</td><td>63/150</td><td>7,564,468</td></tr>
 <tr data-protocol="grouped"><td>MCT-LR2 (fusion)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score" data-sort="28.81">28.81%</td><td class="score" data-sort="0.1628">0.1628</td><td>9/150</td><td>7,562,926</td></tr>
-<tr data-protocol="loso"><td>MCT-LR2 (fusion)</td><td><span class="pill loso">LOSO</span></td><td>Words</td><td>10</td><td>varies</td><td>1 spk</td><td class="score" data-sort="32.68">32.68%</td><td class="score" data-sort="0.2976">0.2976</td><td>varies</td><td>7,564,468</td></tr>
-<tr data-protocol="loso"><td>MCT-LR2 (fusion)</td><td><span class="pill loso">LOSO</span></td><td>Phrases</td><td>4</td><td>varies</td><td>1 spk</td><td class="score" data-sort="27.76">27.76%</td><td class="score" data-sort="0.1668">0.1668</td><td>varies</td><td>7,562,926</td></tr>
-<tr data-protocol="loso"><td>Aripin (image)</td><td><span class="pill loso">LOSO</span></td><td>Words</td><td>10</td><td>varies</td><td>1 spk</td><td class="score" data-sort="28.35">28.35%</td><td class="score" data-sort="0.2775">0.2775</td><td>varies</td><td>1,679,242</td></tr>
-<tr data-protocol="loso"><td>Aripin (image)</td><td><span class="pill loso">LOSO</span></td><td>Phrases</td><td>4</td><td>varies</td><td>1 spk</td><td class="score" data-sort="45.51">45.51%</td><td class="score" data-sort="0.4512">0.4512</td><td>varies</td><td>1,678,852</td></tr>
 </tbody></table></div>
-<p class="note">LOSO rows show per-fold mean accuracy ± sample std. Words fold std: 14.83%, Phrases: 12.20%.</p>
+</section>
+
+<!-- ====== Results Table (LOSO) ====== -->
+<section class="section"><h2>Results — LOSO 8-Fold (test-set accuracy)</h2><p class="note">Fold mean accuracy ± std across 8 held-out speakers. Click table headers to sort.</p>
+<div class="table-wrap"><table id="results-loso">
+<thead><tr><th>Model</th><th>Protocol</th><th>Scope</th><th>Classes</th><th>Train</th><th>Val</th><th>Test acc (mean)</th><th>Macro F1 (pooled)</th><th>Acc std</th><th>Params</th></tr></thead>
+<tbody>
+<tr><td>MCT-LR2 (fusion)</td><td><span class="pill loso">LOSO</span></td><td>Words</td><td>10</td><td>varies</td><td>1 spk</td><td class="score" data-sort="32.68">32.68%</td><td class="score" data-sort="0.3324">0.3324</td><td>14.83%</td><td>7,564,468</td></tr>
+<tr><td>MCT-LR2 (fusion)</td><td><span class="pill loso">LOSO</span></td><td>Phrases</td><td>4</td><td>varies</td><td>1 spk</td><td class="score" data-sort="27.76">27.76%</td><td class="score" data-sort="0.2638">0.2638</td><td>12.20%</td><td>7,562,926</td></tr>
+<tr><td>Aripin (image)</td><td><span class="pill loso">LOSO</span></td><td>Words</td><td>10</td><td>varies</td><td>1 spk</td><td class="score" data-sort="28.35">28.35%</td><td class="score" data-sort="0.2775">0.2775</td><td>9.54%</td><td>1,679,242</td></tr>
+<tr><td>Aripin (image)</td><td><span class="pill loso">LOSO</span></td><td>Phrases</td><td>4</td><td>varies</td><td>1 spk</td><td class="score" data-sort="45.51">45.51%</td><td class="score" data-sort="0.4512">0.4512</td><td>13.21%</td><td>1,678,852</td></tr>
+</tbody></table></div>
 </section>
 
 <!-- ====== Accuracy Bars ====== -->
@@ -214,6 +220,4 @@
 <footer class="wrap">Metrics transcribed from GPU JSON reports for five architectures. Accuracy is validation accuracy, not test accuracy. LOSO uses test-set accuracy (per-fold mean ± std across 8 folds). Aripin LOSO added 30 July 2026.</footer>
 <script>
 (()=>{
-const rows=[...document.querySelectorAll('#results tbody tr')],q=document.querySelector('#search'),bs=[...document.querySelectorAll('.filter')];let f='all';function rowText(r){return[...r.children].map(c=>c.innerText).join(' ').toLowerCase()}function apply(){let s=q.value.toLowerCase();rows.forEach(r=>r.hidden=!((f==='all'||r.dataset.protocol===f)&&rowText(r).includes(s)))}q.oninput=apply;bs.forEach(b=>b.onclick=()=>{f=b.dataset.filter;bs.forEach(x=>x.classList.toggle('active',x===b));apply()});document.querySelectorAll('th').forEach((h,i)=>h.onclick=()=>{let asc=h.dataset.order!=='asc';h.dataset.order=asc?'asc':'desc';rows.sort((a,b)=>{let x=a.children[i],y=b.children[i],av=Number(x.dataset.sort??x.innerText.replace(/[^0-9.]/g,'')),bv=Number(y.dataset.sort??y.innerText.replace(/[^0-9.]/g,''));if(Number.isNaN(av)||Number.isNaN(bv)){av=x.innerText;bv=y.innerText}return(av<bv?-1:av>bv?1:0)*(asc?1:-1)}).forEach(r=>r.parentNode.appendChild(r));apply()})})()
-</script>
-</body></html>
+const rows=[...document.querySelectorAll('#results tbody tr')],q=document.querySelector('#search'),bs=[...document.querySelectorAll('.filter')];let f='all';function rowText(r){return[...r.children].map(c=>c.innerText).join(' ').toLowerCase()}function apply(){let s=q.value.toLowerCase();rows.forEach(r=>r.hidden=!((f==='all'||r.dataset.protocol===f)&&rowText(r).includes(s)))}q.oninput=apply;bs.forEach(b=>b.onclick=()=>{f=b.dataset.filter;bs.forEach(x=>x.classList.toggle('active',x===b));apply()});function wireSort(tableId){const table=document.querySelector('#'+tableId);if(!table)return;table.querySelectorAll('th').forEach((h,i)=>h.onclick=()=>{let asc=h.dataset.order!=='asc';h.dataset.order=asc?'asc':'desc';let trs=[...table.querySelectorAll('tbody tr')];trs.sort((a,b)=>{let x=a.children[i],y=b.children[i],av=Number(x.dataset.sort??x.innerText.replace(/[^0-9.]/g,'')),bv=Number(y.dataset.sort??y.innerText.replace(/[^0-9.]/g,''));if(Number.isNaN(av)||Number.isNaN(bv)){av=x.innerText;bv=y.innerText}return(av<bv?-1:av>bv?1:0)*(asc?1:-1)}).forEach(r=>r.parentNode.appendChild(r))})}wireSort('results');wireSort('results-loso')})()
