@@ -62,9 +62,14 @@
 <div class="val">27.76%</div>
 <div class="val" style="color:var(--muted)">—</div>
 <div class="val" style="color:var(--muted)">—</div>
+<div class="ch">Aripin<small>LOSO</small></div>
+<div class="val">28.35%</div>
+<div class="val">45.51%</div>
+<div class="val" style="color:var(--muted)">—</div>
+<div class="val" style="color:var(--muted)">—</div>
 </div>
 
-<p class="note">LOSO row shows 8-fold mean accuracy ± std. No existing LOSO baseline for comparison. <span class="score">best</span> = highest in column. <span class="score lo">warn</span> = chance-level or near-chance.</p>
+<p class="note">LOSO rows show 8-fold mean accuracy ± std. Aripin LOSO establishes the first image-only LOSO baseline. <span class="score">best</span> = highest in column. <span class="score lo">warn</span> = chance-level or near-chance.</p>
 </section>
 
 <!-- ====== Executive Finding ====== -->
@@ -73,6 +78,7 @@
 <p><strong>MCT-LR2 partially addresses the fusion collapse.</strong> At 7.56M parameters with residual CNN + BiLSTM image stream, motion-augmented BiGRU landmark stream, bidirectional cross-attention fusion, and speaker-adversarial training, MCT-LR2 raises grouped-word accuracy from MCT-LR's catastrophic 11.06% to 43.87%. However, random-phrase accuracy drops to 95.18% and grouped phrases regress to 28.81%, well below Aripin's 59.52%. The grouped-phrase model early-stopped at epoch 9, suggesting instability in the adversarial signal for longer sequences.</p>
 <p><strong>AripinModified trades random-split accuracy for grouped-phrase robustness.</strong> The 3.85M-parameter model uses depthwise 7×7 convolutions, LayerNorm, GELU, inverted bottlenecks, and a two-layer BiLSTM. Grouped phrases rise to 51.90%, while random phrases collapse to 25.30%; treat this as an architecture tradeoff, not a universal improvement.</p>
 <p><strong>LOSO 8-fold evaluation was introduced as a new protocol.</strong> MCT-LR2 LOSO pooled accuracy is 32.51% (words) and 27.63% (phrases), with extreme speaker-dependent variance (9.7%–59.6% per-fold for words). No existing baseline uses LOSO, so these establish the protocol; future LOSO runs of Aripin/Utama/MCT-LR are needed for comparison.</p>
+<p><strong>Aripin LOSO establishes an image-only unseen-speaker baseline.</strong> Under 8-fold LOSO, Aripin achieves 28.35% pooled word accuracy and 45.51% pooled phrase accuracy — the latter surpassing MCT-LR2's 27.63% by +17.88pp. Aripin's lightweight image-only LRCN generalises better to unseen phrase speakers than MCT-LR2's heavier multimodal fusion. Speaker variance remains high (word fold range: 15.80%–39.58%, phrase range: 31.50%–74.09%).</p>
 </section>
 
 <!-- ====== Results Table ====== -->
@@ -109,6 +115,8 @@
 <tr data-protocol="grouped"><td>MCT-LR2 (fusion)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score" data-sort="28.81">28.81%</td><td class="score" data-sort="0.1628">0.1628</td><td>9/150</td><td>7,562,926</td></tr>
 <tr data-protocol="loso"><td>MCT-LR2 (fusion)</td><td><span class="pill loso">LOSO</span></td><td>Words</td><td>10</td><td>varies</td><td>1 spk</td><td class="score" data-sort="32.68">32.68%</td><td class="score" data-sort="0.2976">0.2976</td><td>varies</td><td>7,564,468</td></tr>
 <tr data-protocol="loso"><td>MCT-LR2 (fusion)</td><td><span class="pill loso">LOSO</span></td><td>Phrases</td><td>4</td><td>varies</td><td>1 spk</td><td class="score" data-sort="27.76">27.76%</td><td class="score" data-sort="0.1668">0.1668</td><td>varies</td><td>7,562,926</td></tr>
+<tr data-protocol="loso"><td>Aripin (image)</td><td><span class="pill loso">LOSO</span></td><td>Words</td><td>10</td><td>varies</td><td>1 spk</td><td class="score" data-sort="28.35">28.35%</td><td class="score" data-sort="0.2775">0.2775</td><td>varies</td><td>1,679,242</td></tr>
+<tr data-protocol="loso"><td>Aripin (image)</td><td><span class="pill loso">LOSO</span></td><td>Phrases</td><td>4</td><td>varies</td><td>1 spk</td><td class="score" data-sort="45.51">45.51%</td><td class="score" data-sort="0.4512">0.4512</td><td>varies</td><td>1,678,852</td></tr>
 </tbody></table></div>
 <p class="note">LOSO rows show per-fold mean accuracy ± sample std. Words fold std: 14.83%, Phrases: 12.20%.</p>
 </section>
@@ -138,18 +146,29 @@
 <div class="barrow"><span>MCT-LR · grouped words</span><div class="bar"><i style="width:11.06%"></i></div><b>11.06%</b></div>
 <div class="barrow"><span>MCT-LR2 · LOSO words</span><div class="bar"><i style="width:32.68%"></i></div><b>32.68%</b></div>
 <div class="barrow"><span>MCT-LR2 · LOSO phrases</span><div class="bar"><i style="width:27.76%"></i></div><b>27.76%</b></div>
+<div class="barrow"><span>Aripin · LOSO phrases</span><div class="bar"><i style="width:45.51%"></i></div><b>45.51%</b></div>
+<div class="barrow"><span>Aripin · LOSO words</span><div class="bar"><i style="width:28.35%"></i></div><b>28.35%</b></div>
 </section>
 
 <!-- ====== LOSO Details ====== -->
-<section class="section"><h2>MCT-LR2 — LOSO 8-Fold Cross-Validation</h2>
-<p class="note">New protocol: each of 8 speakers held out as test, next speaker as validation, remaining 6 as training. Pooled accuracy aggregates all fold predictions. No existing baseline — future LOSO runs of Aripin/Utama/MCT-LR needed for comparison.</p>
+<section class="section"><h2>LOSO 8-Fold Cross-Validation</h2>
+<p class="note">Each of 8 speakers held out as test, next speaker as validation, remaining 6 as training. Pooled accuracy aggregates all fold predictions. Aripin LOSO established 30 July 2026 as the first image-only LOSO baseline.</p>
+<h3>MCT-LR2 (fusion)</h3>
 <section class="grid cards">
 <div class="card"><small>Words · pooled acc</small><strong>32.51%</strong><span>fold mean 32.68% &plusmn; 14.83%</span></div>
 <div class="card"><small>Words · pooled F1</small><strong>0.3324</strong><span>fold mean 0.2976 &plusmn; 0.1723</span></div>
 <div class="card"><small>Phrases · pooled acc</small><strong>27.63%</strong><span>fold mean 27.76% &plusmn; 12.20%</span></div>
 <div class="card"><small>Phrases · pooled F1</small><strong>0.2638</strong><span>fold mean 0.1668 &plusmn; 0.1550</span></div>
 </section>
-<p class="note">Per-fold word accuracy: Lulu 9.67%, Sandy 37.00%, Grace 40.60%, Jelly 24.40%, brrr 21.16%, Intan 32.99%, Indra 36.25%, Bella 59.40%. High variance indicates strong speaker-specific visual biases despite adversarial training.</p>
+<p class="note">Per-fold word accuracy: Lulu 9.67%, Sandy 37.00%, Grace 40.60%, Jelly 24.40%, brrr 21.16%, Intan 32.99%, Indra 36.25%, Bella 59.40%.</p>
+<h3>Aripin (image)</h3>
+<section class="grid cards">
+<div class="card"><small>Words · pooled acc</small><strong>28.63%</strong><span>fold mean 28.35% &plusmn; 9.54%</span></div>
+<div class="card"><small>Words · pooled F1</small><strong>0.2775</strong><span>fold mean 0.2187 &plusmn; 0.0992</span></div>
+<div class="card"><small>Phrases · pooled acc</small><strong>45.83%</strong><span>fold mean 45.51% &plusmn; 13.21%</span></div>
+<div class="card"><small>Phrases · pooled F1</small><strong>0.4512</strong><span>fold mean 0.3750 &plusmn; 0.1532</span></div>
+</section>
+<p class="note">Per-fold word accuracy: Lulu 33.64%, Sandy 38.40%, Grace 15.80%, Jelly 21.00%, brrr 15.97%, Intan 39.58%, Indra 31.60%, Bella 30.80%. Per-fold phrase accuracy: Lulu 44.71%, Sandy 38.50%, Grace 31.50%, Jelly 34.50%, brrr 45.27%, Intan 74.09%, Indra 44.00%, Bella 51.50%. Aripin shows less extreme per-fold variance than MCT-LR2 on words (range 15.8%–39.6% vs 9.7%–59.4%).</p>
 </section>
 
 <!-- ====== Configuration ====== -->
@@ -192,7 +211,7 @@
 </ul></section>
 
 </main>
-<footer class="wrap">Metrics transcribed from GPU JSON reports for five architectures. Accuracy is validation accuracy, not test accuracy. LOSO uses per-fold means ± std across 8 folds.</footer>
+<footer class="wrap">Metrics transcribed from GPU JSON reports for five architectures. Accuracy is validation accuracy, not test accuracy. LOSO uses test-set accuracy (per-fold mean ± std across 8 folds). Aripin LOSO added 30 July 2026.</footer>
 <script>
 (()=>{
 const rows=[...document.querySelectorAll('#results tbody tr')],q=document.querySelector('#search'),bs=[...document.querySelectorAll('.filter')];let f='all';function rowText(r){return[...r.children].map(c=>c.innerText).join(' ').toLowerCase()}function apply(){let s=q.value.toLowerCase();rows.forEach(r=>r.hidden=!((f==='all'||r.dataset.protocol===f)&&rowText(r).includes(s)))}q.oninput=apply;bs.forEach(b=>b.onclick=()=>{f=b.dataset.filter;bs.forEach(x=>x.classList.toggle('active',x===b));apply()});document.querySelectorAll('th').forEach((h,i)=>h.onclick=()=>{let asc=h.dataset.order!=='asc';h.dataset.order=asc?'asc':'desc';rows.sort((a,b)=>{let x=a.children[i],y=b.children[i],av=Number(x.dataset.sort??x.innerText.replace(/[^0-9.]/g,'')),bv=Number(y.dataset.sort??y.innerText.replace(/[^0-9.]/g,''));if(Number.isNaN(av)||Number.isNaN(bv)){av=x.innerText;bv=y.innerText}return(av<bv?-1:av>bv?1:0)*(asc?1:-1)}).forEach(r=>r.parentNode.appendChild(r));apply()})})()
