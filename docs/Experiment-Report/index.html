@@ -15,7 +15,7 @@
 </style>
 </head>
 <body>
-<header class="hero wrap"><div class="eyebrow">Experiment report · Utama + Aripin replication · MCT-LR + MCT-LR2 fusion · RTX 5070</div><h1>Four architectures, one dataset, three protocols.</h1><p class="lead">Reimplementations of Utama et al. (Attention-BiLSTM, landmark), Aripin &amp; Setiawan (LRCN-3Conv, image), MCT-LR (late-fusion multimodal), and MCT-LR2 (residual CNN + cross-attention + speaker-adversarial) on IndoLR. Each evaluated under random class-stratified, speaker-grouped, and leave-one-speaker-out protocols. 85:15 train/validation, no test set.</p><p class="meta">Completed 27–29 July 2026 · MCT-LR2 added 29 July 2026 · <a href="../index.html">Documentation home</a> · <a href="../Literature-Review/index.html">Literature review</a></p></header>
+<header class="hero wrap"><div class="eyebrow">Experiment report · Utama + Aripin replication · AripinModified ConvNeXt update · MCT-LR + MCT-LR2 fusion · RTX 5070</div><h1>Five architectures, one dataset, three protocols.</h1><p class="lead">Reimplementations of Utama et al. (Attention-BiLSTM, landmark), Aripin &amp; Setiawan (LRCN-3Conv, image), AripinModified (ConvNeXt-inspired image LRCN), MCT-LR (late-fusion multimodal), and MCT-LR2 (residual CNN + cross-attention + speaker-adversarial) on IndoLR. Each evaluated under random class-stratified, speaker-grouped, and leave-one-speaker-out protocols. 85:15 train/validation, no test set.</p><p class="meta">Completed 27–30 July 2026 · AripinModified added 30 July 2026 · <a href="../index.html">Documentation home</a> · <a href="../Literature-Review/index.html">Literature review</a></p></header>
 <main class="wrap">
 
 <!-- ====== Model Comparison Matrix ====== -->
@@ -39,6 +39,11 @@
 <div class="val best">99.20%</div>
 <div class="val">50.93%</div>
 <div class="val best">59.52%</div>
+<div class="ch">AripinModified<small>3.85M</small></div>
+<div class="val">97.43%</div>
+<div class="val warn">25.30%</div>
+<div class="val warn">47.03%</div>
+<div class="val">51.90%</div>
 
 <div class="ch"><a class="model-link" href="mct-lr.html">MCT-LR</a><em class="click-hint">(click to open)</em><small>1.88M</small></div>
 <div class="val">95.35%</div>
@@ -64,8 +69,9 @@
 
 <!-- ====== Executive Finding ====== -->
 <section class="callout section"><h2>Executive finding</h2>
-<p><strong>Image-only (Aripin) still leads grouped evaluation.</strong> LRCN-3Conv achieves 98.88% random words, 99.20% random phrases, 50.93% grouped words, and 59.52% grouped phrases — the best unseen-speaker baseline among all four architectures.</p>
+<p><strong>Original Aripin remains strongest overall.</strong> LRCN-3Conv achieves 98.88% random words, 99.20% random phrases, 50.93% grouped words, and 59.52% grouped phrases. AripinModified reaches 97.43% random words, 25.30% random phrases, 47.03% grouped words, and 51.90% grouped phrases. Its ConvNeXt-style backbone improves grouped phrases over MCT-LR's 34.76%, but remains below original Aripin's 59.52% and does not replace it as overall leader.
 <p><strong>MCT-LR2 partially addresses the fusion collapse.</strong> At 7.56M parameters with residual CNN + BiLSTM image stream, motion-augmented BiGRU landmark stream, bidirectional cross-attention fusion, and speaker-adversarial training, MCT-LR2 raises grouped-word accuracy from MCT-LR's catastrophic 11.06% to 43.87%. However, random-phrase accuracy drops to 95.18% and grouped phrases regress to 28.81%, well below Aripin's 59.52%. The grouped-phrase model early-stopped at epoch 9, suggesting instability in the adversarial signal for longer sequences.</p>
+<p><strong>AripinModified trades random-split accuracy for grouped-phrase robustness.</strong> The 3.85M-parameter model uses depthwise 7×7 convolutions, LayerNorm, GELU, inverted bottlenecks, and a two-layer BiLSTM. Grouped phrases rise to 51.90%, while random phrases collapse to 25.30%; treat this as an architecture tradeoff, not a universal improvement.</p>
 <p><strong>LOSO 8-fold evaluation was introduced as a new protocol.</strong> MCT-LR2 LOSO pooled accuracy is 32.51% (words) and 27.63% (phrases), with extreme speaker-dependent variance (9.7%–59.6% per-fold for words). No existing baseline uses LOSO, so these establish the protocol; future LOSO runs of Aripin/Utama/MCT-LR are needed for comparison.</p>
 </section>
 
@@ -89,6 +95,10 @@
 <tr data-protocol="random"><td>Aripin (image)</td><td><span class="pill">Random</span></td><td>Phrases</td><td>4</td><td>1,405</td><td>249</td><td class="score" data-sort="99.197">99.20%</td><td class="score" data-sort="0.9920">0.9920</td><td>55/100</td><td>1,678,852</td></tr>
 <tr data-protocol="grouped"><td>Aripin (image)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score" data-sort="50.929">50.93%</td><td class="score" data-sort="0.5052">0.5052</td><td>86/100</td><td>1,679,242</td></tr>
 <tr data-protocol="grouped"><td>Aripin (image)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score" data-sort="59.524">59.52%</td><td class="score" data-sort="0.5741">0.5741</td><td>96/100</td><td>1,678,852</td></tr>
+<tr data-protocol="random"><td>AripinModified (ConvNeXt image)</td><td><span class="pill">Random</span></td><td>Words</td><td>10</td><td>3,530</td><td>623</td><td class="score" data-sort="97.43">97.43%</td><td class="score" data-sort="0.9744">0.9744</td><td>42/100</td><td>3,854,218</td></tr>
+<tr data-protocol="random"><td>AripinModified (ConvNeXt image)</td><td><span class="pill">Random</span></td><td>Phrases</td><td>4</td><td>1,405</td><td>249</td><td class="score" data-sort="25.30">25.30%</td><td class="score" data-sort="0.1023">0.1023</td><td>2/100</td><td>3,853,060</td></tr>
+<tr data-protocol="grouped"><td>AripinModified (ConvNeXt image)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score" data-sort="47.03">47.03%</td><td class="score" data-sort="0.4562">0.4562</td><td>29/100</td><td>3,854,218</td></tr>
+<tr data-protocol="grouped"><td>AripinModified (ConvNeXt image)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score" data-sort="51.90">51.90%</td><td class="score" data-sort="0.5315">0.5315</td><td>27/100</td><td>3,853,060</td></tr>
 <tr data-protocol="random"><td>MCT-LR (fusion)</td><td><span class="pill">Random</span></td><td>Words</td><td>10</td><td>3,530</td><td>623</td><td class="score" data-sort="95.345">95.35%</td><td class="score" data-sort="0.9534">0.9534</td><td>99/100</td><td>1,879,019</td></tr>
 <tr data-protocol="random"><td>MCT-LR (fusion)</td><td><span class="pill">Random</span></td><td>Phrases</td><td>4</td><td>1,405</td><td>249</td><td class="score" data-sort="96.386">96.39%</td><td class="score" data-sort="0.9638">0.9638</td><td>99/100</td><td>1,878,245</td></tr>
 <tr data-protocol="grouped"><td>MCT-LR (fusion)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score" data-sort="11.060">11.06%</td><td class="score" data-sort="0.0217">0.0217</td><td>9/100</td><td>1,879,019</td></tr>
@@ -107,6 +117,10 @@
 <section class="section"><h2>Accuracy by model and protocol</h2>
 <p class="note">Bars show validation accuracy; phrase and word tasks are not pooled.</p>
 <div class="barrow"><span>Aripin · random words</span><div class="bar"><i style="width:98.88%"></i></div><b>98.88%</b></div>
+<div class="barrow"><span>AripinModified · random words</span><div class="bar"><i style="width:97.43%"></i></div><b>97.43%</b></div>
+<div class="barrow"><span>AripinModified · grouped phrases</span><div class="bar"><i style="width:51.90%"></i></div><b>51.90%</b></div>
+<div class="barrow"><span>AripinModified · grouped words</span><div class="bar"><i style="width:47.03%"></i></div><b>47.03%</b></div>
+<div class="barrow"><span>AripinModified · random phrases</span><div class="bar"><i style="width:25.30%"></i></div><b>25.30%</b></div>
 <div class="barrow"><span>Aripin · random phrases</span><div class="bar"><i style="width:99.20%"></i></div><b>99.20%</b></div>
 <div class="barrow"><span>Utama · random phrases</span><div class="bar"><i style="width:99.20%"></i></div><b>99.20%</b></div>
 <div class="barrow"><span>MCT-LR2 · random words</span><div class="bar"><i style="width:97.59%"></i></div><b>97.59%</b></div>
@@ -150,7 +164,7 @@
 <li>Utama: Adam lr=0.005, wd=1e-5, batch=32, 100 epochs</li>
 <li>Aripin: Adam lr=0.0005, wd=1e-5, batch=4, 100 epochs</li>
 <li>MCT-LR: AdamW lr=0.001, wd=1e-4, batch=8, 150 epochs</li>
-<li>MCT-LR2: AdamW lr=3e-4, wd=1e-4, batch=4, 150 epochs</li>
+<li>AripinModified: AdamW lr=3e-4, wd=0.05, batch=4, 100 epochs, AMP</li>
 </ul></article>
 <article class="panel"><h3>MCT-LR2 architecture</h3><ul>
 <li>Image: ResNet-style 3-stage (32→64→128→256) + BiLSTM-2</li>
@@ -171,13 +185,14 @@
 <li><a href="../../src/training/run_all_aripin.sh">Unified Aripin run script</a></li>
 <li><a href="../../src/training/run_all_mct_lr.sh">Unified MCT-LR run script</a></li>
 <li><a href="../../src/training/run_all_mct_lr2.sh">Unified MCT-LR2 run script</a></li>
+<li><a href="../../src/training/run_all_aripin_modified.sh">Unified AripinModified run script</a></li>
 <li><a href="../Literature-Review/index.html">Literature review</a></li>
 <li><a href="https://doi.org/10.20473/jisebi.12.2.269-282">Utama et al. paper</a></li>
 <li><a href="https://doi.org/10.1155/2024/6479124">Aripin &amp; Setiawan paper</a></li>
 </ul></section>
 
 </main>
-<footer class="wrap">Metrics transcribed from GPU JSON reports for all four architectures. Accuracy is validation accuracy, not test accuracy. LOSO uses per-fold means ± std across 8 folds.</footer>
+<footer class="wrap">Metrics transcribed from GPU JSON reports for five architectures. Accuracy is validation accuracy, not test accuracy. LOSO uses per-fold means ± std across 8 folds.</footer>
 <script>
 (()=>{
 const rows=[...document.querySelectorAll('#results tbody tr')],q=document.querySelector('#search'),bs=[...document.querySelectorAll('.filter')];let f='all';function rowText(r){return[...r.children].map(c=>c.innerText).join(' ').toLowerCase()}function apply(){let s=q.value.toLowerCase();rows.forEach(r=>r.hidden=!((f==='all'||r.dataset.protocol===f)&&rowText(r).includes(s)))}q.oninput=apply;bs.forEach(b=>b.onclick=()=>{f=b.dataset.filter;bs.forEach(x=>x.classList.toggle('active',x===b));apply()});document.querySelectorAll('th').forEach((h,i)=>h.onclick=()=>{let asc=h.dataset.order!=='asc';h.dataset.order=asc?'asc':'desc';rows.sort((a,b)=>{let x=a.children[i],y=b.children[i],av=Number(x.dataset.sort??x.innerText.replace(/[^0-9.]/g,'')),bv=Number(y.dataset.sort??y.innerText.replace(/[^0-9.]/g,''));if(Number.isNaN(av)||Number.isNaN(bv)){av=x.innerText;bv=y.innerText}return(av<bv?-1:av>bv?1:0)*(asc?1:-1)}).forEach(r=>r.parentNode.appendChild(r));apply()})})()
