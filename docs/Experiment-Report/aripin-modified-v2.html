@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AripinModifiedV2 Design · IndoLR Experiment Report</title>
+<style>
+:root{color-scheme:dark;--bg:#070d19;--panel:#101b2d;--panel2:#162944;--line:#29476d;--text:#edf4ff;--muted:#a9bad4;--cyan:#72dcff;--blue:#6ea8ff;--violet:#b794ff;--green:#7ef2b0;--amber:#ffd166;--rose:#fda4af;--shadow:0 24px 70px #0007}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 12% -8%,#214f76 0,transparent 34%),radial-gradient(circle at 90% 12%,#352467 0,transparent 27%),var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--cyan)}.wrap{width:min(1180px,calc(100% - 34px));margin:auto}.hero{padding:68px 0 44px}.eyebrow{color:var(--cyan);font-size:.76rem;font-weight:850;letter-spacing:.15em;text-transform:uppercase}.hero h1{max-width:900px;margin:12px 0;font-size:2.4rem;letter-spacing:-.02em;line-height:1.2}.lead{max-width:800px;font-size:1.05rem;color:var(--muted);margin:0}.meta{margin-top:22px;font-size:.82rem;color:var(--muted)}.meta a{color:var(--blue)}section{padding:38px 0}.section h2{font-size:1.4rem;margin:0 0 18px;color:var(--cyan)}.section h3{font-size:1.1rem;margin:28px 0 8px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 26px;box-shadow:var(--shadow)}.panel h3{margin:0 0 10px;font-size:.95rem;color:var(--blue)}.panel ul{margin:0;padding-left:22px}.panel li{margin:4px 0;color:var(--muted);font-size:.88rem}.callout{border-left:4px solid var(--amber);padding-left:20px;background:var(--panel);border-radius:6px;padding:18px 22px}.callout h2{color:var(--amber)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}.twocol{grid-template-columns:repeat(auto-fit,minmax(360px,1fr))}.threecol{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:30px}.stat{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:16px 18px;text-align:center}.stat small{display:block;font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}.stat b{display:block;font-size:1.6rem;margin:4px 0;font-weight:700}.stat span{font-size:.78rem;color:var(--muted)}.stat .warn{color:var(--rose)}footer{margin:40px 0;text-align:center;font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padding-top:28px}footer a{color:var(--blue)}
+/* diagram */
+.diagram-shell{margin:28px 0}.diagram{display:flex;flex-direction:column;gap:16px}.stream{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px}.stream-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}.stream-head h3{font-size:1rem;margin:0;color:var(--blue)}.stream-head span{font-size:.78rem;color:var(--muted)}.stream-head .icon svg{stroke:var(--blue)}.blocks{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}.block{background:var(--panel2);border-radius:8px;padding:10px 12px;font-size:.78rem;line-height:1.4}.block .node{display:inline-block;background:var(--blue);color:var(--bg);border-radius:4px;padding:1px 6px;font-size:.65rem;font-weight:700;margin-right:5px}.fusion{background:var(--panel);border:2px solid var(--cyan);border-radius:10px;padding:18px;text-align:center}.fusion h3{color:var(--cyan);margin:0 0 10px}.fusion-track{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.fusion-step{background:var(--panel2);border-radius:8px;padding:8px 14px;font-size:.78rem;text-align:center;min-width:90px}.fusion-step br{display:block;content:""}.pool-section{display:flex;flex-direction:column;gap:10px;align-items:center}.pool-box{display:flex;gap:12px}.pool-card{background:var(--panel2);border-radius:8px;padding:10px 16px;font-size:.8rem;text-align:center}.pool-card small{display:block;font-size:.7rem;color:var(--muted)}.gate-box{background:var(--panel);border:1px solid var(--violet);border-radius:8px;padding:14px;text-align:center;max-width:480px;margin:0 auto}.gate-box h4{color:var(--violet);margin:0 0 6px;font-size:.85rem}.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;font-size:.74rem;color:var(--muted)}.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:4px;vertical-align:middle}.legend .ri{background:var(--blue)}.legend .mi{background:var(--violet)}.legend .fi{background:var(--cyan)}.legend .cl{background:var(--green)}.note{font-size:.82rem;color:var(--muted);line-height:1.55}
+</style>
+</head>
+<body>
+<header class="hero wrap"><div class="eyebrow">AripinModifiedV2 · two-stream image-only</div><h1>Keep the layout. Add motion. Mask the padding.</h1><p class="lead">Dedicated design page for AripinModifiedV2, a 2.53M-parameter visual speech recognition model combining Aripin's full-resolution spatial backbone with a signed frame-difference motion stream, residual gated fusion, and packed-sequence temporal masking.</p><p class="meta"><a href="index.html">&larr; Back to experiment report</a> &middot; <a href="../index.html">Documentation home</a></p></header>
+<main class="wrap">
+
+<section class="grid stats">
+<div class="stat"><small>Words</small><b>2,532,562</b><span>parameters</span></div>
+<div class="stat"><small>Phrases</small><b>2,531,788</b><span>parameters</span></div>
+<div class="stat"><small>Optimizer</small><b>Adam 5e-4</b><span>wd=1e-5, no schedule</span></div>
+<div class="stat"><small>Checkpoint</small><b>Val accuracy</b><span>lower loss as tie-breaker</span></div>
+</section>
+
+<section class="callout section"><h2>AripinModifiedV2 design</h2>
+<p><strong>Original Aripin appearance path + signed motion channel + padded-by-example masking.</strong> V2 retains the proven three-block <code>1&rarr;16&rarr;32&rarr;64</code> spatial encoder that produces a full <code>64&times;10&times;10</code> mouth-layout descriptor per frame. It adds an in-model signed-difference motion stream: consecutive frame deltas are split into positive and negative channels (2-channel input) then encoded through a compact <code>2&rarr;8&rarr;16&rarr;32</code> spatial backbone. Both streams feed independent 64-unit single-layer LSTMs whose outputs fuse through a zero-initialized residual gate&mdash;motion evidence is gated in only when training proves it useful. Tail padding (from center-crop preprocessing) is masked via <code>pack_padded_sequence</code>, last-valid endpoint selection, and masked additive attention pooling.</p>
+<p>Reference: Petridis et al., <em>End-to-End Visual Speech Recognition for Small-Scale Datasets</em> (PRL 2019, <a href="https://arxiv.org/abs/1904.01954">arXiv:1904.01954</a>) for raw/difference stream complementarity on small datasets.</p>
+</section>
+
+<section class="section"><h2>Architecture</h2>
+<p class="note">Visual schematic. Raw appearance stream (blue) reuses Aripin's proven spatial backbone. Motion stream (violet) operates on in-model signed frame differences. Gated fusion (cyan) starts at near-zero motion contribution and learns to add it.</p>
+
+<div class="diagram-shell"><div class="diagram">
+
+<!-- Raw stream -->
+<article class="stream">
+<div class="stream-head"><div class="icon"><svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="8.5" cy="10" r="2"/><path d="m21 15-4.5-4.5L8 19"/></svg></div><div><h3>Raw appearance stream</h3><span>1-channel grayscale ROI &middot; 80&times;80</span></div></div>
+<div class="blocks">
+<div class="block"><span class="node">1</span>Conv2d 1&rarr;16<em>ReLU · MaxPool2d(2) · Dropout(.25)</em></div>
+<div class="block"><span class="node">2</span>Conv2d 16&rarr;32<em>ReLU · MaxPool2d(2) · Dropout(.25)</em></div>
+<div class="block"><span class="node">3</span>Conv2d 32&rarr;64<em>ReLU · MaxPool2d(2) · Dropout(.25)</em></div>
+<div class="block"><span class="node">4</span>Flatten &rarr; 6,400-d<em>64&times;10&times;10</em></div>
+<div class="block"><span class="node">5</span>LSTM 6,400&rarr;64<em>1 layer · batch_first · packed</em></div>
+<div class="block"><span class="node">6</span>Dropout<em>0.5</em></div>
+</div>
+</article>
+
+<!-- Motion stream -->
+<article class="stream">
+<div class="stream-head"><div class="icon"><svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h16M12 4v16"/><path d="M8 8l4-4 4 4M8 16l4 4 4-4"/></svg></div><div><h3>Signed motion stream</h3><span>2-channel difference &middot; in-model computation</span></div></div>
+<div class="blocks">
+<div class="block"><span class="node">1</span>Frame diffs &rarr; pos/neg split<em>2 channels &middot; &Delta;x = x<sub>t</sub> &minus; x<sub>t&minus;1</sub></em></div>
+<div class="block"><span class="node">2</span>Conv2d 2&rarr;8<em>ReLU · MaxPool2d(2) · Dropout(.25)</em></div>
+<div class="block"><span class="node">3</span>Conv2d 8&rarr;16<em>ReLU · MaxPool2d(2) · Dropout(.25)</em></div>
+<div class="block"><span class="node">4</span>Conv2d 16&rarr;32<em>ReLU · MaxPool2d(2) · Dropout(.25)</em></div>
+<div class="block"><span class="node">5</span>Flatten &rarr; 3,200-d<em>32&times;10&times;10</em></div>
+<div class="block"><span class="node">6</span>LSTM 3,200&rarr;64<em>1 layer · batch_first · packed</em></div>
+<div class="block"><span class="node">7</span>Dropout<em>0.5</em></div>
+</div>
+</article>
+
+<!-- Fusion gate -->
+<div class="gate-box">
+<h4>Residual motion gate</h4>
+<p style="font-size:.78rem;color:var(--muted);margin:0">
+gate = &sigma;(Linear<sub>128&rarr;64</sub>(concat(raw<sub>t</sub>, motion<sub>t</sub>)))<br>
+fused<sub>t</sub> = raw<sub>t</sub> + gate &odot; motion<sub>t</sub><br>
+<small>Weight&nbsp;=&nbsp;0, bias&nbsp;=&nbsp;&minus;2 &rarr; initial gate &asymp; 0.12</small>
+</p>
+</div>
+
+<!-- Pooling -->
+<div class="pool-section">
+<div class="pool-box">
+<div class="pool-card">Last valid timestep<small>index from padding mask</small></div>
+<div class="pool-card">Masked additive attention<small>Linear<sub>64&rarr;32</sub> · Tanh · Linear<sub>32&rarr;1</sub></small></div>
+</div>
+</div>
+
+<!-- Classifier -->
+<div class="fusion">
+<div class="fusion-card"><h3>Classifier</h3>
+<div class="fusion-track">
+<div class="fusion-step">Concat<br>128-d</div>
+<div class="fusion-step">LayerNorm<br>128</div>
+<div class="fusion-step">Dropout<br>0.5</div>
+<div class="fusion-step">Linear<br>128&rarr;K</div>
+</div></div>
+</div>
+
+</div><!-- /.diagram -->
+
+<div class="legend">
+<span><i class="ri"></i>raw stream</span>
+<span><i class="mi"></i>motion stream</span>
+<span><i class="fi"></i>fusion</span>
+<span><i class="cl"></i>prediction</span>
+</div></div><!-- /.diagram-shell -->
+
+<p class="note">Both streams encode valid frames only via <code>pack_padded_sequence</code>. The last-valid timestep and masked attention scores both exclude padded tails, so black frames never contribute to the classifier input.</p>
+</section>
+
+<section class="grid threecol section">
+<article class="panel"><h3>Raw backbone</h3><ul>
+<li>Three <code>3&times;3</code> Conv blocks: 1&rarr;16, 16&rarr;32, 32&rarr;64</li>
+<li>Each block: Conv2d &rarr; ReLU &rarr; MaxPool2d(2) &rarr; Dropout(0.25)</li>
+<li>Preserves complete 64&times;10&times;10 mouth map</li>
+<li>Flatten &rarr; 6,400-d per-frame descriptor</li>
+<li>LSTM(6400, 64, 1 layer, batch_first)</li>
+<li>Identical to LRCN3Conv spatial path</li>
+</ul></article>
+<article class="panel"><h3>Motion backbone</h3><ul>
+<li>Consecutive signed frame differences in-model</li>
+<li>Split: <code>max(&Delta;,0)</code> and <code>max(&minus;&Delta;,0)</code> as 2 channels</li>
+<li>Compact encoder: 2&rarr;8&rarr;16&rarr;32 (half widths of raw)</li>
+<li>Same block pattern: Conv2d &rarr; ReLU &rarr; MaxPool2d(2) &rarr; Dropout(0.25)</li>
+<li>Flatten &rarr; 3,200-d; LSTM(3200, 64, 1 layer)</li>
+<li>Opening/closing direction distinguishable via split</li>
+</ul></article>
+<article class="panel"><h3>Regularisation</h3><ul>
+<li>Dropout 0.25 (spatial blocks), 0.5 (LSTM output, classifier)</li>
+<li>Zero-initialized motion gate (bias &minus;2)</li>
+<li>Contrast &plusmn;15%, brightness &plusmn;8%, Gaussian noise &sigma;=0.015</li>
+<li>Per-utterance time-consistent affine jitter (scale 0.95&ndash;1.05, translate &plusmn;5%)</li>
+<li>Gradient clipping at 5.0</li>
+<li>Padding preserved through all augmentation</li>
+</ul></article>
+</section>
+
+<section class="grid twocol section">
+<article class="panel"><h3>Training configuration</h3><ul>
+<li>Optimizer: Adam, lr=5e-4, wd=1e-5 (original Aripin)</li>
+<li>Batch size 4, no gradient accumulation</li>
+<li>Max 100 epochs, no early stopping</li>
+<li>Best checkpoint by validation accuracy (loss tie-breaker)</li>
+<li>No label smoothing, no LR schedule</li>
+<li>Mixed precision (AMP) on CUDA</li>
+<li>CrossEntropyLoss, no auxiliary loss</li>
+</ul></article>
+<article class="panel"><h3>Parameter breakdown</h3><ul>
+<li>Raw spatial (3 ConvBlocks): 25,904</li>
+<li>Raw LSTM (6400&rarr;64): 1,647,616</li>
+<li>Motion spatial (3 ConvBlocks): 11,768</li>
+<li>Motion LSTM (3200&rarr;64): 826,880</li>
+<li>Fusion gate: 8,256</li>
+<li>Attention scorer: 2,080</li>
+<li>Classifier (10 words): 1,290 / (4 phrases): 516</li>
+<li><strong>Total: 2,532,562 (words) / 2,531,788 (phrases)</strong></li>
+</ul></article>
+</section>
+
+<section class="callout section"><h2>Design rationale</h2>
+<p><strong>Original Aripin's spatial backbone is the strongest known inductive bias for this dataset.</strong> The three 3&times;3 conv blocks preserve a full 10&times;10 mouth map; global pooling or deeper downsampling during spatial encoding discards positional precision that the 64-unit LSTM needs. AripinModified (3.85M ConvNeXt-style, global pool) regresses to 25.30% random phrases, supporting this finding.</p>
+<p><strong>Frame differences add complementary motion evidence without new preprocessing.</strong> Petridis et al. report raw+difference stream fusion improves speaker-independent performance on small datasets. V2's zero-initialized gate lets the model learn motion use, because initial gate output is &asymp;0.12 &mdash; raw stream dominates at start.</p>
+<p><strong>Explicit padding masking removes a source of distribution shift.</strong> ROI preprocessing center-crops long clips and black-pads short clips; prior models treat padded frames as real content. <code>pack_padded_sequence</code>, last-valid endpoint selection, and masked attention ensure the classifier sees only true mouth frames.</p>
+</section>
+
+</main>
+<footer class="wrap">AripinModifiedV2 architecture documentation. Results pending GPU training. <a href="../../src/models/aripin_modified_v2.py">View model source</a> &middot; <a href="../../src/training/train_aripin_modified_v2.py">View training source</a></footer>
+</body>
+</html>
