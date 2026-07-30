@@ -249,6 +249,18 @@ def main() -> None:
             result["test_speaker"] = test_sp
             result["val_speaker"] = val_sp
             result["fold"] = fi
+            # Persist test predictions back into the per-fold JSON
+            fold_json_path = Path("output/logs") / f"{run_name}.json"
+            if fold_json_path.exists():
+                fold_data = json.loads(fold_json_path.read_text())
+                fold_data["test_y_true"] = true
+                fold_data["test_y_pred"] = pred
+                fold_data["final_test_acc"] = test_acc
+                fold_data["final_test_f1_macro"] = test_f1
+                fold_data["test_speaker"] = test_sp
+                fold_data["val_speaker"] = val_sp
+                fold_data["fold"] = fi
+                fold_json_path.write_text(json.dumps(fold_data, indent=2))
             fold_results.append(result)
 
         if args.fold is not None:
