@@ -15,7 +15,7 @@ from sklearn.metrics import accuracy_score, classification_report, f1_score
 from torch import nn
 from torch.utils.data import DataLoader, Dataset
 
-from src.data.aripin_dataset import collect_samples_aripin, split_train_val
+from src.data.aripin_dataset import AripinROIDataset, collect_samples_aripin, split_train_val
 from src.models.lrcn import LRCN3Conv, model_summary
 
 
@@ -176,14 +176,17 @@ def train_aripin(
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--protocol", choices=["random", "grouped"], required=True)
+    parser.add_argument("--protocol", choices=["random", "grouped", "loso"], required=True)
     parser.add_argument("--scope", choices=["words", "phrases"], required=True)
     parser.add_argument("--precomputed-root", type=Path, default=Path("precomputed_aripin"))
     parser.add_argument("--device", choices=["auto", "cuda", "cpu"], default="auto")
     parser.add_argument("--epochs", type=int, default=100)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--fold", type=int, default=None, help="LOSO fold index 0..7")
     parser.add_argument("--sanity", action="store_true", help="Override to 3 epochs for quick smoke")
     args = parser.parse_args()
+    if args.fold is not None and args.protocol != "loso":
+        raise SystemExit("--fold requires --protocol loso")
     if args.sanity:
         effective_epochs = 3
         print(f"SANITY MODE: epochs {args.epochs} -> {effective_epochs}", flush=True)
@@ -193,6 +196,121 @@ def main() -> None:
     labels = [class_name for _, class_name, _ in samples]
     speakers = [speaker for _, _, speaker in samples]
     unique_speakers = sorted(set(speakers))
+
+    if args.protocol == "loso":
+        if len(unique_speakers) != 8:
+            raise SystemExit(
+                f"LOSO requires exactly 8 speakers, found {len(unique_speakers)}: {unique_speakers}"
+            )
+        from src.data.aripin_dataset import make_loso_folds_aripin
+        folds = make_loso_folds_aripin(samples)
+        fold_indices = [args.fold] if args.fold is not None else list(range(len(folds)))
+        fold_results: list[dict[str, Any]] = []
+        for fi in fold_indices:
+            if fi < 0 or fi >= len(folds):
+                raise ValueError(f"Fold {fi} out of range [0, {len(folds) - 1}]")
+            test_sp, val_sp, tr_s, va_s, te_s = folds[fi]
+            train_ds = AripinROIDataset(tr_s)
+            val_ds = AripinROIDataset(va_s)
+            test_ds = AripinROIDataset(te_s)
+            safe_sp = test_sp.replace(" ", "_")
+            run_name = f"aripin_loso_{args.scope}_fold{fi}_{safe_sp}_seed{args.seed}"
+            print(f"\n{'='*60}\nFold {fi}: test={test_sp}, val={val_sp}\n{'='*60}", flush=True)
+            result = train_aripin(
+                train_ds, val_ds,
+                num_classes=len(train_ds.classes),
+                epochs=effective_epochs,
+                seed=args.seed,
+                device=args.device,
+                run_name=run_name,
+            )
+            # Evaluate on test set
+            _device = torch.device("cuda" if torch.cuda.is_available() and args.device != "cpu" else "cpu")
+            model = LRCN3Conv(num_classes=len(train_ds.classes)).to(_device)
+            ckpt = torch.load(result["checkpoint"], map_location=_device, weights_only=False)
+            model.load_state_dict(ckpt["model_state"])
+            model.eval()
+            test_loader = DataLoader(test_ds, batch_size=4, shuffle=False)
+            true: list[int] = []
+            pred: list[int] = []
+            with torch.no_grad():
+                for features, labels in test_loader:
+                    features = features.to(_device)
+                    logits = model(features)
+                    true.extend(labels.tolist())
+                    pred.extend(logits.argmax(dim=1).tolist())
+            test_acc = accuracy_score(true, pred)
+            test_f1 = f1_score(true, pred, average="macro", zero_division=0)
+            print(f"Fold {fi} test_acc={test_acc:.4f} test_f1_macro={test_f1:.4f}", flush=True)
+            result["test_y_true"] = true
+            result["test_y_pred"] = pred
+            result["final_test_acc"] = test_acc
+            result["final_test_f1_macro"] = test_f1
+            result["test_speaker"] = test_sp
+            result["val_speaker"] = val_sp
+            result["fold"] = fi
+            fold_results.append(result)
+
+        if args.fold is not None:
+            print(f"\nSingle fold {args.fold} complete — no aggregation.", flush=True)
+            return
+
+        # Aggregate across folds
+        pooled_true: list[int] = []
+        pooled_pred: list[int] = []
+        fold_accs: list[float] = []
+        fold_f1s: list[float] = []
+        for fr in fold_results:
+            if fr.get("test_y_true") and fr.get("test_y_pred"):
+                pooled_true.extend(fr["test_y_true"])
+                pooled_pred.extend(fr["test_y_pred"])
+            fold_accs.append(fr["final_test_acc"] or 0.0)
+            fold_f1s.append(fr["final_test_f1_macro"] or 0.0)
+
+        pooled_acc = accuracy_score(pooled_true, pooled_pred) if pooled_true else 0.0
+        pooled_f1 = f1_score(pooled_true, pooled_pred, average="macro", zero_division=0) if pooled_true else 0.0
+        acc_mean = float(np.mean(fold_accs))
+        acc_std = float(np.std(fold_accs, ddof=1))
+        f1_mean = float(np.mean(fold_f1s))
+        f1_std = float(np.std(fold_f1s, ddof=1))
+
+        aggregate_path = Path(f"output/logs/aripin_loso_{args.scope}_seed{args.seed}_aggregate.json")
+        aggregate_path.parent.mkdir(parents=True, exist_ok=True)
+        aggregate: dict[str, Any] = {
+            "run_name": f"aripin_loso_{args.scope}_seed{args.seed}",
+            "protocol": args.protocol,
+            "scope": args.scope,
+            "seed": args.seed,
+            "n_params": fold_results[0]["n_params"] if fold_results else 0,
+            "folds": [
+                {
+                    "fold": fr["fold"],
+                    "test_speaker": fr["test_speaker"],
+                    "val_speaker": fr["val_speaker"],
+                    "train_size": fr["train_size"],
+                    "val_size": fr["val_size"],
+                    "test_size": len(fr.get("test_y_true", [])),
+                    "best_val_acc": fr["best_val_acc"],
+                    "best_epoch": fr["best_epoch"],
+                    "final_test_acc": fr["final_test_acc"],
+                    "final_test_f1_macro": fr["final_test_f1_macro"],
+                }
+                for fr in fold_results
+            ],
+            "pooled_accuracy": pooled_acc,
+            "pooled_f1_macro": pooled_f1,
+            "fold_acc_mean": acc_mean,
+            "fold_acc_std": acc_std,
+            "fold_f1_mean": f1_mean,
+            "fold_f1_std": f1_std,
+        }
+        aggregate_path.write_text(json.dumps(aggregate, indent=2))
+        print(f"\nAggregate written to {aggregate_path}", flush=True)
+        print(f"  Pooled acc: {pooled_acc:.4f}, Pooled F1: {pooled_f1:.4f}")
+        print(f"  Fold mean acc: {acc_mean:.4f} ± {acc_std:.4f}")
+        return
+
+    # --- existing random/grouped path ---
     actual_protocol = args.protocol
     if args.protocol == "grouped" and len(unique_speakers) < 2:
         print(f"WARNING: only {len(unique_speakers)} speaker(s) in sanity mode; falling back to random split", flush=True)

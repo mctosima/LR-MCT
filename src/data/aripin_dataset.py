@@ -96,3 +96,49 @@ def split_train_val(
     if not train_samples or not val_samples:
         raise ValueError("Split produced an empty train or validation set")
     return AripinROIDataset(train_samples), AripinROIDataset(val_samples)
+
+# ---------------------------------------------------------------------------
+# LOSO folds
+# ---------------------------------------------------------------------------
+
+def make_loso_folds_aripin(
+    samples: Sequence[Sample],
+) -> list[tuple[str, str, list[Sample], list[Sample], list[Sample]]]:
+    """Create leave-one-speaker-out folds from Aripin ROI samples.
+
+    Fold ``i`` holds out speaker ``i`` as test, speaker ``(i+1)%N`` as
+    validation, and the remaining speakers as training.  Order is
+    lexicographic by speaker name, so folds are deterministic.
+
+    Returns:
+        List of ``(test_speaker, val_speaker, train_samples, val_samples, test_samples)``.
+
+    Raises:
+        ValueError: if fewer than 3 unique speakers are present.
+        AssertionError: if any partition is empty or speaker sets overlap.
+    """
+    samples = list(samples)
+    speakers = sorted({sp for _, _, sp in samples})
+    n = len(speakers)
+    if n < 3:
+        raise ValueError(f"make_loso_folds_aripin requires at least 3 speakers, found {n}")
+
+    folds: list[tuple[str, str, list[Sample], list[Sample], list[Sample]]] = []
+    for i, test_sp in enumerate(speakers):
+        val_sp = speakers[(i + 1) % n]
+        train_sps = {s for j, s in enumerate(speakers) if j != i and j != (i + 1) % n}
+        train_samples = [s for s in samples if s[2] in train_sps]
+        val_samples = [s for s in samples if s[2] == val_sp]
+        test_samples = [s for s in samples if s[2] == test_sp]
+        assert train_samples, f"Fold {i}: train partition is empty"
+        assert val_samples, f"Fold {i}: val partition is empty"
+        assert test_samples, f"Fold {i}: test partition is empty"
+        train_sp_set = {s[2] for s in train_samples}
+        val_sp_set = {s[2] for s in val_samples}
+        test_sp_set = {s[2] for s in test_samples}
+        assert train_sp_set.isdisjoint(val_sp_set), f"Fold {i}: train/val overlap"
+        assert train_sp_set.isdisjoint(test_sp_set), f"Fold {i}: train/test overlap"
+        assert val_sp_set.isdisjoint(test_sp_set), f"Fold {i}: val/test overlap"
+        folds.append((test_sp, val_sp, train_samples, val_samples, test_samples))
+
+    return folds
