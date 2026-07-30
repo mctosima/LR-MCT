@@ -14,16 +14,19 @@ if [[ "${1:-}" == "--sanity" ]]; then
   exit 0
 fi
 
-for protocol in random grouped; do
-  for scope in words phrases; do
-    echo "Running AripinV2: protocol=$protocol scope=$scope"
-    .venv/bin/python -u -m src.training.train_aripin_v2 \
-      --protocol "$protocol" \
-      --scope "$scope" \
-      --device auto \
-      --epochs 100 \
-      --seed 42
-  done
+for config in \
+  "random words" \
+  "grouped words" \
+  "random phrases" \
+  "grouped phrases"; do
+  read -r protocol scope <<< "$config"
+  echo "Running AripinV2: protocol=$protocol scope=$scope"
+  .venv/bin/python -u -m src.training.train_aripin_v2 \
+    --protocol "$protocol" \
+    --scope "$scope" \
+    --device auto \
+    --epochs 100 \
+    --seed 42
 done
 
 echo "AripinV2 runs complete"
