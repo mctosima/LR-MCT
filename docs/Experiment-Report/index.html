@@ -12,6 +12,7 @@
 
 
 @media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}.twocol{grid-template-columns:1fr}.matrix{grid-template-columns:160px repeat(4,minmax(92px,1fr));font-size:.82rem}}@media(max-width:540px){.cards{grid-template-columns:1fr}.barrow{grid-template-columns:1fr;gap:3px}.matrix{grid-template-columns:155px repeat(4,minmax(92px,1fr));font-size:.72rem}.matrix .ch{font-size:.76rem}}
+.metric-field{display:inline-flex;align-items:center;gap:9px;color:var(--muted);font-size:.78rem;font-weight:850;letter-spacing:.08em;text-transform:uppercase}.metric-field select{appearance:none;-webkit-appearance:none;min-width:156px;padding:9px 36px 9px 14px;border:1px solid #4e8fbd;border-radius:999px;background:linear-gradient(135deg,#1b4568,#132640);box-shadow:0 6px 18px #0004,0 0 0 3px #7dd3fc12;color:var(--text);cursor:pointer;font:inherit;font-size:.82rem;font-weight:800;letter-spacing:0;text-transform:none}.metric-field{position:relative}.metric-field::after{content:'▾';position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--cyan);font-size:1rem;pointer-events:none}.metric-field select:hover{border-color:var(--cyan);background:linear-gradient(135deg,#245b83,#183252)}.metric-field select:focus{border-color:var(--cyan);outline:none;box-shadow:0 0 0 3px #7dd3fc33,0 8px 22px #0005}
 </style>
 </head>
 <body>
@@ -19,9 +20,15 @@
 <main class="wrap">
 
 <!-- ====== Model Comparison Matrix ====== -->
-<section class="section"><h2>Model comparison</h2><p class="note">Validation accuracy (85:15 split). Click linked model names for architecture details.</p>
-
-<div class="matrix">
+<section class="section"><h2>Model comparison</h2><p class="note">Use Metric to switch validation score. Click linked model names for architecture details.</p>
+<div class="toolbar"><label class="metric-field" for="metric-matrix">Metric
+<select id="metric-matrix">
+<option value="accuracy" selected>Accuracy</option>
+<option value="f1">Macro F1</option>
+<option value="precision">Macro precision</option>
+<option value="recall">Macro recall</option>
+</select></label></div>
+<div class="matrix" id="comparison-matrix">
 <div class="rh"></div>
 <div class="rh">Rand Words</div>
 <div class="rh">Rand Phrases</div>
@@ -29,42 +36,44 @@
 <div class="rh">Grp Phrases</div>
 
 <div class="ch">Utama<small>0.18M</small></div>
-<div class="val">94.70%</div>
-<div class="val">99.20%</div>
-<div class="val">50.65%</div>
-<div class="val warn">25.00%</div>
+<div class="val matrix-score" data-column="0" data-scope="words" data-accuracy="94.703" data-f1="0.9468" data-precision="0.946901" data-recall="0.946991">94.70%</div>
+<div class="val matrix-score" data-column="1" data-scope="phrases" data-accuracy="99.197" data-f1="0.9920" data-precision="0.991999" data-recall="0.992063">99.20%</div>
+<div class="val matrix-score" data-column="2" data-scope="words" data-accuracy="50.651" data-f1="0.5102" data-precision="0.533560" data-recall="0.508768">50.65%</div>
+<div class="val matrix-score" data-column="3" data-scope="phrases" data-accuracy="25.000" data-f1="0.1000" data-precision="0.062500" data-recall="0.250000">25.00%</div>
 
 <div class="ch">Aripin<small>1.68M</small></div>
-<div class="val best">98.88%</div>
-<div class="val best">99.20%</div>
-<div class="val">50.93%</div>
-<div class="val best">59.52%</div>
+<div class="val matrix-score" data-column="0" data-scope="words" data-accuracy="98.876" data-f1="0.9887" data-precision="0.988878" data-recall="0.988760">98.88%</div>
+<div class="val matrix-score" data-column="1" data-scope="phrases" data-accuracy="99.197" data-f1="0.9920" data-precision="0.992061" data-recall="0.992063">99.20%</div>
+<div class="val matrix-score" data-column="2" data-scope="words" data-accuracy="50.929" data-f1="0.5052" data-precision="0.571463" data-recall="0.507564">50.93%</div>
+<div class="val matrix-score" data-column="3" data-scope="phrases" data-accuracy="59.524" data-f1="0.5741" data-precision="0.676995" data-recall="0.595238">59.52%</div>
+
 <div class="ch">AripinModified<small>3.85M</small></div>
-<div class="val">97.43%</div>
-<div class="val warn">25.30%</div>
-<div class="val warn">47.03%</div>
-<div class="val">51.90%</div>
+<div class="val matrix-score" data-column="0" data-scope="words" data-accuracy="97.430" data-f1="0.9744" data-precision="0.974489" data-recall="0.974419">97.43%</div>
+<div class="val matrix-score" data-column="1" data-scope="phrases" data-accuracy="25.300" data-f1="0.1023" data-precision="0.064286" data-recall="0.250000">25.30%</div>
+<div class="val matrix-score" data-column="2" data-scope="words" data-accuracy="47.030" data-f1="0.4562" data-precision="0.534334" data-recall="0.466332">47.03%</div>
+<div class="val matrix-score" data-column="3" data-scope="phrases" data-accuracy="51.900" data-f1="0.5315" data-precision="0.552173" data-recall="0.519048">51.90%</div>
 
 <div class="ch"><a class="model-link" href="mct-lr.html">MCT-LR</a><em class="click-hint">(click to open)</em><small>1.88M</small></div>
-<div class="val">95.35%</div>
-<div class="val">96.39%</div>
-<div class="val warn">11.06%</div>
-<div class="val warn">34.76%</div>
+<div class="val matrix-score" data-column="0" data-scope="words" data-accuracy="95.345" data-f1="0.9534" data-precision="0.954359" data-recall="0.953498">95.35%</div>
+<div class="val matrix-score" data-column="1" data-scope="phrases" data-accuracy="96.386" data-f1="0.9638" data-precision="0.964506" data-recall="0.963900">96.39%</div>
+<div class="val matrix-score" data-column="2" data-scope="words" data-accuracy="11.060" data-f1="0.0217" data-precision="0.020171" data-recall="0.100952">11.06%</div>
+<div class="val matrix-score" data-column="3" data-scope="phrases" data-accuracy="34.762" data-f1="0.2427" data-precision="0.198181" data-recall="0.347619">34.76%</div>
 
 <div class="ch"><a class="model-link" href="mct-lr2.html">MCT-LR2</a><em class="click-hint">(click to open)</em><small>7.56M</small></div>
-<div class="val">97.59%</div>
-<div class="val">95.18%</div>
-<div class="val">43.87%</div>
-<div class="val warn">28.81%</div>
+<div class="val matrix-score" data-column="0" data-scope="words" data-accuracy="97.590" data-f1="0.9761" data-precision="0.976720" data-recall="0.975929">97.59%</div>
+<div class="val matrix-score" data-column="1" data-scope="phrases" data-accuracy="95.180" data-f1="0.9521" data-precision="0.953717" data-recall="0.951797">95.18%</div>
+<div class="val matrix-score" data-column="2" data-scope="words" data-accuracy="43.870" data-f1="0.4430" data-precision="0.522906" data-recall="0.435143">43.87%</div>
+<div class="val matrix-score" data-column="3" data-scope="phrases" data-accuracy="28.810" data-f1="0.1628" data-precision="0.160723" data-recall="0.288095">28.81%</div>
+
 <div class="ch"><a class="model-link" href="aripin-modified-v2.html">AripinModifiedV2</a><em class="click-hint">(click to open)</em><small>2.53M</small></div>
-<div class="val">97.43%</div>
-<div class="val">97.59%</div>
-<div class="val best">55.86%</div>
-<div class="val best">60.24%</div>
+<div class="val matrix-score" data-column="0" data-scope="words" data-accuracy="97.430" data-f1="0.9744" data-precision="0.974650" data-recall="0.974545">97.43%</div>
+<div class="val matrix-score" data-column="1" data-scope="phrases" data-accuracy="97.590" data-f1="0.9758" data-precision="0.976341" data-recall="0.975800">97.59%</div>
+<div class="val matrix-score" data-column="2" data-scope="words" data-accuracy="55.860" data-f1="0.5538" data-precision="0.585271" data-recall="0.556116">55.86%</div>
+<div class="val matrix-score" data-column="3" data-scope="phrases" data-accuracy="60.240" data-f1="0.5576" data-precision="0.599048" data-recall="0.602381">60.24%</div>
 
 </div>
 
-<p class="note"><span class="score">best</span> = highest in column. <span class="score lo">warn</span> = chance-level or near-chance.</p>
+<p class="note"><span class="score">best</span> = highest in selected metric column. <span class="score lo">warn</span> = chance-level or near-chance for selected metric.</p>
 </section>
 
 <!-- ====== LOSO Comparison Matrix ====== -->
@@ -108,55 +117,71 @@
 </section>
 
 <!-- ====== Results Table (Random + Grouped) ====== -->
-<section class="section"><h2>Results — Random &amp; Grouped (85:15 validation)</h2><p class="note">Click table headers to sort. Search by model, protocol, or scope.</p>
+<section class="section"><h2>Results — Random &amp; Grouped (85:15 validation)</h2><p class="note">Use Metric to switch the score column. Scores are validation metrics from the 85:15 split. Click table headers to sort; search by model, protocol, or scope.</p>
 <div class="toolbar">
+<label class="metric-field" for="metric">Metric
+<select id="metric">
+<option value="accuracy" selected>Accuracy</option>
+<option value="f1">Macro F1</option>
+<option value="precision">Macro precision</option>
+<option value="recall">Macro recall</option>
+</select></label>
 <input id="search" type="search" placeholder="Filter results…" aria-label="Filter results">
 <button class="filter active" data-filter="all">All</button>
 <button class="filter" data-filter="random">Random</button>
 <button class="filter" data-filter="grouped">Grouped</button>
 </div>
 <div class="table-wrap"><table id="results">
-<thead><tr><th>Model</th><th>Protocol</th><th>Scope</th><th>Classes</th><th>Train</th><th>Val</th><th>Val acc</th><th>Macro F1</th><th>Best epoch</th><th>Params</th></tr></thead>
+<thead><tr><th>Model</th><th>Protocol</th><th>Scope</th><th>Classes</th><th>Train</th><th>Val</th><th class="metric-head">Val acc</th><th>Best epoch</th><th>Params</th></tr></thead>
 <tbody>
-<tr data-protocol="random"><td>Utama (landmark)</td><td><span class="pill">Random</span></td><td>Words</td><td>10</td><td>3,530</td><td>623</td><td class="score" data-sort="94.703">94.70%</td><td class="score" data-sort="0.9468">0.9468</td><td>88/100</td><td>175,499</td></tr>
-<tr data-protocol="random"><td>Utama (landmark)</td><td><span class="pill">Random</span></td><td>Phrases</td><td>4</td><td>1,405</td><td>249</td><td class="score" data-sort="99.197">99.20%</td><td class="score" data-sort="0.9920">0.9920</td><td>94/100</td><td>2,271,749</td></tr>
-<tr data-protocol="grouped"><td>Utama (landmark)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score" data-sort="50.651">50.65%</td><td class="score" data-sort="0.5102">0.5102</td><td>99/100</td><td>175,499</td></tr>
-<tr data-protocol="grouped"><td>Utama (landmark)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score" data-sort="25.000">25.00%</td><td class="score" data-sort="0.1000">0.1000</td><td>1/100</td><td>2,271,749</td></tr>
-<tr data-protocol="random"><td>Aripin (image)</td><td><span class="pill">Random</span></td><td>Words</td><td>10</td><td>3,530</td><td>623</td><td class="score" data-sort="98.876">98.88%</td><td class="score" data-sort="0.9887">0.9887</td><td>90/100</td><td>1,679,242</td></tr>
-<tr data-protocol="random"><td>Aripin (image)</td><td><span class="pill">Random</span></td><td>Phrases</td><td>4</td><td>1,405</td><td>249</td><td class="score" data-sort="99.197">99.20%</td><td class="score" data-sort="0.9920">0.9920</td><td>55/100</td><td>1,678,852</td></tr>
-<tr data-protocol="grouped"><td>Aripin (image)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score" data-sort="50.929">50.93%</td><td class="score" data-sort="0.5052">0.5052</td><td>86/100</td><td>1,679,242</td></tr>
-<tr data-protocol="grouped"><td>Aripin (image)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score" data-sort="59.524">59.52%</td><td class="score" data-sort="0.5741">0.5741</td><td>96/100</td><td>1,678,852</td></tr>
-<tr data-protocol="grouped"><td>MCT-LR2 (fusion)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score" data-sort="28.81">28.81%</td><td class="score" data-sort="0.1628">0.1628</td><td>9/150</td><td>7,562,926</td></tr>
-<tr data-protocol="random"><td>AripinModifiedV2 (raw+motion image)</td><td><span class="pill">Random</span></td><td>Words</td><td>10</td><td>3,530</td><td>623</td><td class="score" data-sort="97.43">97.43%</td><td class="score" data-sort="0.9744">0.9744</td><td>83/100</td><td>2,532,562</td></tr>
-<tr data-protocol="random"><td>AripinModifiedV2 (raw+motion image)</td><td><span class="pill">Random</span></td><td>Phrases</td><td>4</td><td>1,405</td><td>249</td><td class="score" data-sort="97.59">97.59%</td><td class="score" data-sort="0.9758">0.9758</td><td>91/100</td><td>2,531,788</td></tr>
-<tr data-protocol="grouped"><td>AripinModifiedV2 (raw+motion image)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score" data-sort="55.86">55.86%</td><td class="score" data-sort="0.5538">0.5538</td><td>38/100</td><td>2,532,562</td></tr>
-<tr data-protocol="grouped"><td>AripinModifiedV2 (raw+motion image)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score" data-sort="60.24">60.24%</td><td class="score" data-sort="0.5576">0.5576</td><td>92/100</td><td>2,531,788</td></tr>
-<tr data-protocol="grouped"><td>AripinModified (ConvNeXt image)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score" data-sort="47.03">47.03%</td><td class="score" data-sort="0.4562">0.4562</td><td>29/100</td><td>3,854,218</td></tr>
-<tr data-protocol="grouped"><td>AripinModified (ConvNeXt image)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score" data-sort="51.90">51.90%</td><td class="score" data-sort="0.5315">0.5315</td><td>27/100</td><td>3,853,060</td></tr>
-<tr data-protocol="random"><td>MCT-LR (fusion)</td><td><span class="pill">Random</span></td><td>Words</td><td>10</td><td>3,530</td><td>623</td><td class="score" data-sort="95.345">95.35%</td><td class="score" data-sort="0.9534">0.9534</td><td>99/100</td><td>1,879,019</td></tr>
-<tr data-protocol="random"><td>MCT-LR (fusion)</td><td><span class="pill">Random</span></td><td>Phrases</td><td>4</td><td>1,405</td><td>249</td><td class="score" data-sort="96.386">96.39%</td><td class="score" data-sort="0.9638">0.9638</td><td>99/100</td><td>1,878,245</td></tr>
-<tr data-protocol="grouped"><td>MCT-LR (fusion)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score" data-sort="11.060">11.06%</td><td class="score" data-sort="0.0217">0.0217</td><td>9/100</td><td>1,879,019</td></tr>
-<tr data-protocol="grouped"><td>MCT-LR (fusion)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score" data-sort="34.762">34.76%</td><td class="score" data-sort="0.2427">0.2427</td><td>10/100</td><td>1,878,245</td></tr>
-<tr data-protocol="random"><td>MCT-LR2 (fusion)</td><td><span class="pill">Random</span></td><td>Words</td><td>10</td><td>3,530</td><td>623</td><td class="score" data-sort="97.59">97.59%</td><td class="score" data-sort="0.9761">0.9761</td><td>84/150</td><td>7,564,468</td></tr>
-<tr data-protocol="random"><td>MCT-LR2 (fusion)</td><td><span class="pill">Random</span></td><td>Phrases</td><td>4</td><td>1,405</td><td>249</td><td class="score" data-sort="95.18">95.18%</td><td class="score" data-sort="0.9521">0.9521</td><td>98/150</td><td>7,562,926</td></tr>
-<tr data-protocol="grouped"><td>MCT-LR2 (fusion)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score" data-sort="43.87">43.87%</td><td class="score" data-sort="0.4430">0.4430</td><td>63/150</td><td>7,564,468</td></tr>
-<tr data-protocol="grouped"><td>MCT-LR2 (fusion)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score" data-sort="28.81">28.81%</td><td class="score" data-sort="0.1628">0.1628</td><td>9/150</td><td>7,562,926</td></tr>
+<tr data-protocol="random"><td>Utama (landmark)</td><td><span class="pill">Random</span></td><td>Words</td><td>10</td><td>3,530</td><td>623</td><td class="score metric-score" data-sort="94.703" data-accuracy="94.703" data-f1="0.9468" data-precision="0.946901" data-recall="0.946991">94.70%</td><td>88/100</td><td>175,499</td></tr>
+<tr data-protocol="random"><td>Utama (landmark)</td><td><span class="pill">Random</span></td><td>Phrases</td><td>4</td><td>1,405</td><td>249</td><td class="score metric-score" data-sort="99.197" data-accuracy="99.197" data-f1="0.9920" data-precision="0.991999" data-recall="0.992063">99.20%</td><td>94/100</td><td>2,271,749</td></tr>
+<tr data-protocol="grouped"><td>Utama (landmark)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score metric-score" data-sort="50.651" data-accuracy="50.651" data-f1="0.5102" data-precision="0.533560" data-recall="0.508768">50.65%</td><td>99/100</td><td>175,499</td></tr>
+<tr data-protocol="grouped"><td>Utama (landmark)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score metric-score" data-sort="25.000" data-accuracy="25.000" data-f1="0.1000" data-precision="0.062500" data-recall="0.250000">25.00%</td><td>1/100</td><td>2,271,749</td></tr>
+<tr data-protocol="random"><td>Aripin (image)</td><td><span class="pill">Random</span></td><td>Words</td><td>10</td><td>3,530</td><td>623</td><td class="score metric-score" data-sort="98.876" data-accuracy="98.876" data-f1="0.9887" data-precision="0.988878" data-recall="0.988760">98.88%</td><td>90/100</td><td>1,679,242</td></tr>
+<tr data-protocol="random"><td>Aripin (image)</td><td><span class="pill">Random</span></td><td>Phrases</td><td>4</td><td>1,405</td><td>249</td><td class="score metric-score" data-sort="99.197" data-accuracy="99.197" data-f1="0.9920" data-precision="0.992061" data-recall="0.992063">99.20%</td><td>55/100</td><td>1,678,852</td></tr>
+<tr data-protocol="grouped"><td>Aripin (image)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score metric-score" data-sort="50.929" data-accuracy="50.929" data-f1="0.5052" data-precision="0.571463" data-recall="0.507564">50.93%</td><td>86/100</td><td>1,679,242</td></tr>
+<tr data-protocol="grouped"><td>Aripin (image)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score metric-score" data-sort="59.524" data-accuracy="59.524" data-f1="0.5741" data-precision="0.676995" data-recall="0.595238">59.52%</td><td>96/100</td><td>1,678,852</td></tr>
+<tr data-protocol="random"><td>AripinModifiedV2 (raw+motion image)</td><td><span class="pill">Random</span></td><td>Words</td><td>10</td><td>3,530</td><td>623</td><td class="score metric-score" data-sort="97.43" data-accuracy="97.43" data-f1="0.9744" data-precision="0.974650" data-recall="0.974545">97.43%</td><td>83/100</td><td>2,532,562</td></tr>
+<tr data-protocol="random"><td>AripinModifiedV2 (raw+motion image)</td><td><span class="pill">Random</span></td><td>Phrases</td><td>4</td><td>1,405</td><td>249</td><td class="score metric-score" data-sort="97.59" data-accuracy="97.59" data-f1="0.9758" data-precision="0.976341" data-recall="0.975800">97.59%</td><td>91/100</td><td>2,531,788</td></tr>
+<tr data-protocol="grouped"><td>AripinModifiedV2 (raw+motion image)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score metric-score" data-sort="55.86" data-accuracy="55.86" data-f1="0.5538" data-precision="0.585271" data-recall="0.556116">55.86%</td><td>38/100</td><td>2,532,562</td></tr>
+<tr data-protocol="grouped"><td>AripinModifiedV2 (raw+motion image)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score metric-score" data-sort="60.24" data-accuracy="60.24" data-f1="0.5576" data-precision="0.599048" data-recall="0.602381">60.24%</td><td>92/100</td><td>2,531,788</td></tr>
+<tr data-protocol="random"><td>AripinModified (ConvNeXt image)</td><td><span class="pill">Random</span></td><td>Words</td><td>10</td><td>3,530</td><td>623</td><td class="score metric-score" data-sort="97.43" data-accuracy="97.43" data-f1="0.9744" data-precision="0.974489" data-recall="0.974419">97.43%</td><td>42/100</td><td>3,854,218</td></tr>
+<tr data-protocol="random"><td>AripinModified (ConvNeXt image)</td><td><span class="pill">Random</span></td><td>Phrases</td><td>4</td><td>1,405</td><td>249</td><td class="score metric-score" data-sort="25.30" data-accuracy="25.30" data-f1="0.1023" data-precision="0.064286" data-recall="0.250000">25.30%</td><td>2/100</td><td>3,853,060</td></tr>
+<tr data-protocol="grouped"><td>AripinModified (ConvNeXt image)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score metric-score" data-sort="47.03" data-accuracy="47.03" data-f1="0.4562" data-precision="0.534334" data-recall="0.466332">47.03%</td><td>29/100</td><td>3,854,218</td></tr>
+<tr data-protocol="grouped"><td>AripinModified (ConvNeXt image)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score metric-score" data-sort="51.90" data-accuracy="51.90" data-f1="0.5315" data-precision="0.552173" data-recall="0.519048">51.90%</td><td>27/100</td><td>3,853,060</td></tr>
+<tr data-protocol="random"><td>MCT-LR (fusion)</td><td><span class="pill">Random</span></td><td>Words</td><td>10</td><td>3,530</td><td>623</td><td class="score metric-score" data-sort="95.345" data-accuracy="95.345" data-f1="0.9534" data-precision="0.954359" data-recall="0.953498">95.35%</td><td>99/100</td><td>1,879,019</td></tr>
+<tr data-protocol="random"><td>MCT-LR (fusion)</td><td><span class="pill">Random</span></td><td>Phrases</td><td>4</td><td>1,405</td><td>249</td><td class="score metric-score" data-sort="96.386" data-accuracy="96.386" data-f1="0.9638" data-precision="0.964506" data-recall="0.963900">96.39%</td><td>99/100</td><td>1,878,245</td></tr>
+<tr data-protocol="grouped"><td>MCT-LR (fusion)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score metric-score" data-sort="11.060" data-accuracy="11.060" data-f1="0.0217" data-precision="0.020171" data-recall="0.100952">11.06%</td><td>9/100</td><td>1,879,019</td></tr>
+<tr data-protocol="grouped"><td>MCT-LR (fusion)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score metric-score" data-sort="34.762" data-accuracy="34.762" data-f1="0.2427" data-precision="0.198181" data-recall="0.347619">34.76%</td><td>10/100</td><td>1,878,245</td></tr>
+<tr data-protocol="random"><td>MCT-LR2 (fusion)</td><td><span class="pill">Random</span></td><td>Words</td><td>10</td><td>3,530</td><td>623</td><td class="score metric-score" data-sort="97.59" data-accuracy="97.59" data-f1="0.9761" data-precision="0.976720" data-recall="0.975929">97.59%</td><td>84/150</td><td>7,564,468</td></tr>
+<tr data-protocol="random"><td>MCT-LR2 (fusion)</td><td><span class="pill">Random</span></td><td>Phrases</td><td>4</td><td>1,405</td><td>249</td><td class="score metric-score" data-sort="95.18" data-accuracy="95.18" data-f1="0.9521" data-precision="0.953717" data-recall="0.951797">95.18%</td><td>98/150</td><td>7,562,926</td></tr>
+<tr data-protocol="grouped"><td>MCT-LR2 (fusion)</td><td><span class="pill warn">Grouped</span></td><td>Words</td><td>10</td><td>3,077</td><td>1,076</td><td class="score metric-score" data-sort="43.87" data-accuracy="43.87" data-f1="0.4430" data-precision="0.522906" data-recall="0.435143">43.87%</td><td>63/150</td><td>7,564,468</td></tr>
+<tr data-protocol="grouped"><td>MCT-LR2 (fusion)</td><td><span class="pill warn">Grouped</span></td><td>Phrases</td><td>4</td><td>1,234</td><td>420</td><td class="score metric-score" data-sort="28.81" data-accuracy="28.81" data-f1="0.1628" data-precision="0.160723" data-recall="0.288095">28.81%</td><td>9/150</td><td>7,562,926</td></tr>
 </tbody></table></div>
 </section>
 
 <!-- ====== Results Table (LOSO) ====== -->
-<section class="section"><h2>Results — LOSO 8-Fold (test-set accuracy)</h2><p class="note">Fold mean accuracy ± std across 8 held-out speakers. Click table headers to sort.</p>
+<section class="section"><h2>Results — LOSO 8-Fold (test-set accuracy)</h2><p class="note">Use Metric to switch the score column. Accuracy is the 8-fold mean; macro F1, precision, and recall are pooled from all held-out fold predictions. Acc std applies to accuracy. Click table headers to sort.</p>
+<div class="toolbar"><label class="metric-field" for="metric-loso">Metric
+<select id="metric-loso">
+<option value="accuracy" selected>Accuracy</option>
+<option value="f1">Macro F1</option>
+<option value="precision">Macro precision</option>
+<option value="recall">Macro recall</option>
+</select></label></div>
 <div class="table-wrap"><table id="results-loso">
-<thead><tr><th>Model</th><th>Protocol</th><th>Scope</th><th>Classes</th><th>Train</th><th>Val</th><th>Test acc (mean)</th><th>Macro F1 (pooled)</th><th>Acc std</th><th>Params</th></tr></thead>
+<thead><tr><th>Model</th><th>Protocol</th><th>Scope</th><th>Classes</th><th>Train</th><th>Val</th><th class="metric-head">Test acc (mean)</th><th>Acc std</th><th>Params</th></tr></thead>
 <tbody>
-<tr><td>MCT-LR2 (fusion)</td><td><span class="pill loso">LOSO</span></td><td>Words</td><td>10</td><td>varies</td><td>1 spk</td><td class="score" data-sort="32.68">32.68%</td><td class="score" data-sort="0.3324">0.3324</td><td>14.83%</td><td>7,564,468</td></tr>
-<tr><td>MCT-LR2 (fusion)</td><td><span class="pill loso">LOSO</span></td><td>Phrases</td><td>4</td><td>varies</td><td>1 spk</td><td class="score" data-sort="27.76">27.76%</td><td class="score" data-sort="0.2638">0.2638</td><td>12.20%</td><td>7,562,926</td></tr>
-<tr><td>Aripin (image)</td><td><span class="pill loso">LOSO</span></td><td>Words</td><td>10</td><td>varies</td><td>1 spk</td><td class="score" data-sort="28.35">28.35%</td><td class="score" data-sort="0.2775">0.2775</td><td>9.54%</td><td>1,679,242</td></tr>
-<tr><td>Aripin (image)</td><td><span class="pill loso">LOSO</span></td><td>Phrases</td><td>4</td><td>varies</td><td>1 spk</td><td class="score" data-sort="45.51">45.51%</td><td class="score" data-sort="0.4512">0.4512</td><td>13.21%</td><td>1,678,852</td></tr>
-<tr><td>AripinModifiedV2 (raw+motion image)</td><td><span class="pill loso">LOSO</span></td><td>Words</td><td>10</td><td>varies</td><td>1 spk</td><td class="score" data-sort="49.95">49.95%</td><td class="score" data-sort="0.5023">0.5023</td><td>10.46%</td><td>2,532,562</td></tr>
-<tr><td>AripinModifiedV2 (raw+motion image)</td><td><span class="pill loso">LOSO</span></td><td>Phrases</td><td>4</td><td>varies</td><td>1 spk</td><td class="score" data-sort="45.54">45.54%</td><td class="score" data-sort="0.4472">0.4472</td><td>20.52%</td><td>2,531,788</td></tr>
+<tr><td>MCT-LR2 (fusion)</td><td><span class="pill loso">LOSO</span></td><td>Words</td><td>10</td><td>varies</td><td>1 spk</td><td class="score metric-score" data-sort="32.68" data-accuracy="32.68" data-f1="0.3324" data-precision="0.368123" data-recall="0.324963">32.68%</td><td>14.83%</td><td>7,564,468</td></tr>
+<tr><td>MCT-LR2 (fusion)</td><td><span class="pill loso">LOSO</span></td><td>Phrases</td><td>4</td><td>varies</td><td>1 spk</td><td class="score metric-score" data-sort="27.76" data-accuracy="27.76" data-f1="0.2638" data-precision="0.324057" data-recall="0.276694">27.76%</td><td>12.20%</td><td>7,562,926</td></tr>
+<tr><td>Aripin (image)</td><td><span class="pill loso">LOSO</span></td><td>Words</td><td>10</td><td>varies</td><td>1 spk</td><td class="score metric-score" data-sort="28.35" data-accuracy="28.35" data-f1="0.2775" data-precision="0.295577" data-recall="0.286290">28.35%</td><td>9.54%</td><td>1,679,242</td></tr>
+<tr><td>Aripin (image)</td><td><span class="pill loso">LOSO</span></td><td>Phrases</td><td>4</td><td>varies</td><td>1 spk</td><td class="score metric-score" data-sort="45.51" data-accuracy="45.51" data-f1="0.4512" data-precision="0.469114" data-recall="0.458111">45.51%</td><td>13.21%</td><td>1,678,852</td></tr>
+<tr><td>AripinModifiedV2 (raw+motion image)</td><td><span class="pill loso">LOSO</span></td><td>Words</td><td>10</td><td>varies</td><td>1 spk</td><td class="score metric-score" data-sort="49.95" data-accuracy="49.95" data-f1="0.5023" data-precision="0.542013" data-recall="0.497863">49.95%</td><td>10.46%</td><td>2,532,562</td></tr>
+<tr><td>AripinModifiedV2 (raw+motion image)</td><td><span class="pill loso">LOSO</span></td><td>Phrases</td><td>4</td><td>varies</td><td>1 spk</td><td class="score metric-score" data-sort="45.54" data-accuracy="45.54" data-f1="0.4472" data-precision="0.464200" data-recall="0.459800">45.54%</td><td>20.52%</td><td>2,531,788</td></tr>
 </tbody></table></div>
 </section>
+
 
 <!-- ====== Accuracy Bars ====== -->
 <section class="section"><h2>Accuracy by model and protocol</h2>
@@ -253,8 +278,9 @@
 <li><a href="https://doi.org/10.20473/jisebi.12.2.269-282">Utama et al. paper</a></li>
 <li><a href="https://doi.org/10.1155/2024/6479124">Aripin &amp; Setiawan paper</a></li>
 </ul></section>
-<footer class="wrap">Metrics transcribed from GPU JSON reports for six architectures. Accuracy is validation accuracy, not test accuracy. LOSO uses test-set accuracy (per-fold mean ± std across 8 folds). AripinModifiedV2 added 30 July 2026.</footer>
+<footer class="wrap">Metrics transcribed from GPU JSON reports for six architectures. Random/grouped metrics are validation metrics. LOSO accuracy is the per-fold mean; LOSO macro F1, precision, and recall are pooled test metrics. AripinModifiedV2 added 30 July 2026.</footer>
 </main>
 <script>
 (()=>{
-const rows=[...document.querySelectorAll('#results tbody tr')],q=document.querySelector('#search'),bs=[...document.querySelectorAll('.filter')];let f='all';function rowText(r){return[...r.children].map(c=>c.innerText).join(' ').toLowerCase()}function apply(){let s=q.value.toLowerCase();rows.forEach(r=>r.hidden=!((f==='all'||r.dataset.protocol===f)&&rowText(r).includes(s)))}q.oninput=apply;bs.forEach(b=>b.onclick=()=>{f=b.dataset.filter;bs.forEach(x=>x.classList.toggle('active',x===b));apply()});function wireSort(tableId){const table=document.querySelector('#'+tableId);if(!table)return;table.querySelectorAll('th').forEach((h,i)=>h.onclick=()=>{let asc=h.dataset.order!=='asc';h.dataset.order=asc?'asc':'desc';let trs=[...table.querySelectorAll('tbody tr')];trs.sort((a,b)=>{let x=a.children[i],y=b.children[i],av=Number(x.dataset.sort??x.innerText.replace(/[^0-9.]/g,'')),bv=Number(y.dataset.sort??y.innerText.replace(/[^0-9.]/g,''));if(Number.isNaN(av)||Number.isNaN(bv)){av=x.innerText;bv=y.innerText}return(av<bv?-1:av>bv?1:0)*(asc?1:-1)}).forEach(r=>r.parentNode.appendChild(r))})}wireSort('results');wireSort('results-loso')})()
+const rows=[...document.querySelectorAll('#results tbody tr')],q=document.querySelector('#search'),bs=[...document.querySelectorAll('.filter')];let f='all';function rowText(r){return[...r.children].map(c=>c.innerText).join(' ').toLowerCase()}function apply(){let s=q.value.toLowerCase();rows.forEach(r=>r.hidden=!((f==='all'||r.dataset.protocol===f)&&rowText(r).includes(s)))}q.oninput=apply;bs.forEach(b=>b.onclick=()=>{f=b.dataset.filter;bs.forEach(x=>x.classList.toggle('active',x===b));apply()});function wireMetricTable(tableId,selectId,labels){const table=document.querySelector('#'+tableId),select=document.querySelector('#'+selectId),head=table.querySelector('.metric-head');function applyMetric(){const key=select.value,meta=labels[key];head.textContent=meta.label;table.querySelectorAll('.metric-score').forEach(cell=>{const value=cell.dataset[key];cell.dataset.sort=value;cell.textContent=meta.format(Number(value))})}select.onchange=applyMetric;applyMetric()}const percent=value=>value.toFixed(2)+'%',decimal=value=>value.toFixed(4);function wireMatrixMetric(){const matrix=document.querySelector('#comparison-matrix'),select=document.querySelector('#metric-matrix'),labels={accuracy:{format:percent},f1:{format:decimal},precision:{format:decimal},recall:{format:decimal}};function applyMetric(){const key=select.value,meta=labels[key],cells=[...matrix.querySelectorAll('.matrix-score')];cells.forEach(cell=>{const value=Number(cell.dataset[key]);cell.textContent=meta.format(value);cell.classList.remove('best','warn')});for(let column=0;column<4;column++){const group=cells.filter(cell=>Number(cell.dataset.column)===column),max=Math.max(...group.map(cell=>Number(cell.dataset[key])));group.forEach(cell=>{const value=Number(cell.dataset[key]),normalized=key==='accuracy'?value/100:value;if(value===max)cell.classList.add('best');if(normalized<0.5)cell.classList.add('warn')})}}select.onchange=applyMetric;applyMetric()}wireMatrixMetric();wireMetricTable('results','metric',{accuracy:{label:'Val acc',format:percent},f1:{label:'Macro F1',format:decimal},precision:{label:'Macro precision',format:decimal},recall:{label:'Macro recall',format:decimal}});wireMetricTable('results-loso','metric-loso',{accuracy:{label:'Test acc (mean)',format:percent},f1:{label:'Macro F1 (pooled)',format:decimal},precision:{label:'Macro precision (pooled)',format:decimal},recall:{label:'Macro recall (pooled)',format:decimal}});wireSort('results');wireSort('results-loso')})()
+</script>
