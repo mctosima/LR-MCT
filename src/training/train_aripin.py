@@ -335,7 +335,7 @@ def main() -> None:
         epochs=effective_epochs,
         seed=args.seed,
         device=args.device,
-        run_name=f"aripin_{args.protocol}_{args.scope}",
+        run_name=f"aripin_{args.protocol}_{args.scope}_seed{args.seed}",
     )
 
 
